@@ -1,7 +1,7 @@
 
-# 📧 EmailServiceAPI
+# 📧 MailAPIX
 
-EmailServiceAPI is a robust RESTful backend API built using **FastAPI**, **PostgreSQL**, and **smtplib** to facilitate secure, scalable, and customizable email delivery. It supports user management, secure tokens, and email template-based communication.
+MailAPIX is a robust RESTful backend API built using **FastAPI**, **PostgreSQL**, and **smtplib** to facilitate secure, scalable, and customizable email delivery. It supports user management, secure tokens, and email template-based communication.
 
 ---
 
