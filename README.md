@@ -8,7 +8,7 @@ MailAPIX is a robust RESTful backend API built using **FastAPI**, **PostgreSQL**
 ## 🗂️ Project Structure
 
 ```
-EmailServiceAPI/
+MailAPIXAPI/
 ├── Controller/            # Business logic (email sending, validations)
 ├── Routers/               # FastAPI route definitions
 ├── database.py            # DB connection and session config
@@ -43,8 +43,8 @@ EmailServiceAPI/
 ### Setup
 
 ```bash
-git clone https://github.com/Sumit0ubey/EmailServiceAPP.git
-cd EmailServiceAPP
+git clone https://github.com/Sumit0ubey/MailAPIX.git
+cd MailAPIX
 
 python -m venv venv
 source venv/bin/activate  # macOS/Linux
@@ -202,7 +202,7 @@ Made with ❤️ by [Sumit Dubey](https://github.com/Sumit0ubey)
 ## ⚠️ Usage & License Notice
 
 This project is open-source for educational and reference purposes. It is hosted at:
-🔗 [Email Service API](https://emailserviceapp.onrender.com/docs)
+🔗 [MailAPIX](https://emailserviceapp.onrender.com/docs)
 
 You **may view, learn from, and fork this repository**, but **you are not permitted to republish, resell, or claim it as your own** under any circumstances.
 
