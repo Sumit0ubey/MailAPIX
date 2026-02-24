@@ -7,14 +7,19 @@ load_dotenv()
 
 WEBSITE_LINK = getenv("WEBSITE_LINK", "#")
 REFUND_POLICY_LINK = getenv("REFUND_POLICY_LINK", "#")
+UPI_REDIRECT_URL = getenv("UPI_REDIRECT_URL", "https://sumit0ubey.github.io/HelperWebPages/upi_redirect.html")
+UPI_ID = getenv("UPI_ID", "#")
+NEWBIE_PACK_PRICE = getenv("NEWBIE_PACK", "30")
+VETERAN_PACK_PRICE = getenv("VETERAN_PACK", "300")
+CREATOR_PACK_PRICE = getenv("CREATOR_PACK", "450")
+OWNER_PACK_PRICE = getenv("OWNER_PACK", "3423")
+CURRENCY = getenv("CURRENCY", "INR")
 
 def packagesPlan():
-    upi_id = "sumit2003dubey@ibl"
-    upi_redirect_url = "https://sumit0ubey.github.io/HelperWebPages/upi_redirect.html"
-    card1 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=30&cu=INR&tn=Newbie_Pack")}'
-    card2 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=300&cu=INR&tn=Veteran_Pack")}'
-    card3 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=450&cu=INR&tn=Creator_Pack")}'
-    card4 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=3423&cu=INR&tn=Owner_Pack")}'
+    card1 = f'{UPI_REDIRECT_URL}?upi={encodedUPI(f"upi://pay?pa={UPI_ID}&pn=MailApix_API&am={NEWBIE_PACK_PRICE}&cu={CURRENCY}&tn=Newbie_Pack")}'
+    card2 = f'{UPI_REDIRECT_URL}?upi={encodedUPI(f"upi://pay?pa={UPI_ID}&pn=MailApix_API_API&am={VETERAN_PACK_PRICE}&cu={CURRENCY}&tn=Veteran_Pack")}'
+    card3 = f'{UPI_REDIRECT_URL}?upi={encodedUPI(f"upi://pay?pa={UPI_ID}&pn=MailApix_API_API&am={CREATOR_PACK_PRICE}&cu={CURRENCY}&tn=Creator_Pack")}'
+    card4 = f'{UPI_REDIRECT_URL}?upi={encodedUPI(f"upi://pay?pa={UPI_ID}&pn=MailApix_API_API&am={OWNER_PACK_PRICE}&cu={CURRENCY}&tn=Owner_Pack")}'
     return f"""
     <html lang="en"><head>
       <meta charset="UTF-8">
