@@ -1,4 +1,12 @@
+from os import getenv
+from dotenv import load_dotenv
+
 from EmailServiceAPI.utils import encodedUPI
+
+load_dotenv()
+
+WEBSITE_LINK = getenv("WEBSITE_LINK", "#")
+REFUND_POLICY_LINK = getenv("REFUND_POLICY_LINK", "#")
 
 def packagesPlan():
     upi_id = "sumit2003dubey@ibl"
@@ -7,7 +15,6 @@ def packagesPlan():
     card2 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=300&cu=INR&tn=Veteran_Pack")}'
     card3 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=450&cu=INR&tn=Creator_Pack")}'
     card4 = f'{upi_redirect_url}?upi={encodedUPI(f"upi://pay?pa={upi_id}&pn=Email_Server_API&am=3423&cu=INR&tn=Owner_Pack")}'
-    refund_policy_link = "#"
     return f"""
     <html lang="en"><head>
       <meta charset="UTF-8">
@@ -145,8 +152,8 @@ def packagesPlan():
         </div>
 
         <div class="footer">
-          Sent by <a href="https://github.com/Sumit0ubey">Email Service API</a> • All rights reserved © 2025<br>
-          <a href="{refund_policy_link}">Refund Policy</a>
+          Sent by <a href="{WEBSITE_LINK}">MailApix API</a> • All rights reserved © 2025<br>
+          <a href="{REFUND_POLICY_LINK}">Refund Policy</a>
         </div>
       </div>
 

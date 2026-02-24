@@ -1,5 +1,13 @@
+from dotenv import load_dotenv
+from datetime import datetime
+from os import getenv
+
+load_dotenv()
+
+WEBSITE_LINK = getenv("WEBSITE_LINK", "#")
 
 def registrationEmail(iD: int, token: str):
+    now = datetime.now()
     return f"""
     <html lang="en">
     <head>
@@ -105,7 +113,7 @@ def registrationEmail(iD: int, token: str):
         </div>
 
         <div class="footer">
-          Sent by <a href="https://github.com/Sumit0ubey">Email Service API</a> • All rights reserved © 2025<br />
+          Sent by <a href="{WEBSITE_LINK}">MailApix API</a> • All rights reserved © {now.year}<br />
         </div>
       </div>
     </body>

@@ -18,10 +18,10 @@ from email.utils import formataddr
 from EmailServiceAPI.Templates.cool import cool
 from EmailServiceAPI.Templates.amazing import Amazing
 from EmailServiceAPI.Templates.simple import simple
+from EmailServiceAPI.Templates.impressive import impressive
 
 from EmailServiceAPI.Templates.System.tokenrevert import tokenRevert
 from EmailServiceAPI.Templates.System.packageplan import packagesPlan
-from EmailServiceAPI.Templates.System.mailapix import mailApix_Email_Format
 from EmailServiceAPI.Templates.System.registration import registrationEmail
 
 
@@ -66,7 +66,7 @@ class EmailService:
 
     _USER_ALLOWED_TEMPLATES = {0, 1, 2, 3, 4}
 
-    SystemTemplate = Literal["mailapix", "packages", "registration", "tokenrevert"]
+    SystemTemplate = Literal["packages", "registration", "tokenrevert"]
 
     @staticmethod
     def _is_valid_email(addr: str) -> bool:
@@ -159,7 +159,11 @@ class EmailService:
             return html_body, (data or "")
 
         if template_id == 2:
-            html_body = Amazing(data=data, company_name=company_name)
+            html_body = Amazing(data=data, email_title=email_title, company_name=company_name, company_link=company_link)
+            return html_body, (data or "")
+
+        if template_id == 3:
+            html_body = impressive(data=data, subject=email_title, company_name=company_name, company_link=company_link)
             return html_body, (data or "")
 
         html_body = simple(data=data)
@@ -171,21 +175,10 @@ class EmailService:
         system_template: "EmailService.SystemTemplate",
         *,
         data: str = "",
-        company_name: Optional[str] = None,
-        company_link: Optional[str] = None,
-        email_title: Optional[str] = None,
         iD: Optional[int] = None,
         token: Optional[str] = None,
     ) -> str:
         st = system_template
-
-        if st == "mailapix":
-            return mailApix_Email_Format(
-                data=data,
-                subject=email_title,
-                company_name=company_name,
-                company_link=company_link,
-            )
 
         if st == "packages":
             return packagesPlan()

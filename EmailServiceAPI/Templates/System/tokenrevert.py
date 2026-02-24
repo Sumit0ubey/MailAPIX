@@ -1,3 +1,9 @@
+from dotenv import load_dotenv
+from os import getenv
+
+load_dotenv()
+
+WEBSITE_LINK = getenv("WEBSITE_LINK", "#")
 
 def tokenRevert(token: str):
     return f"""
@@ -104,7 +110,7 @@ def tokenRevert(token: str):
         </div>
 
         <div class="footer">
-          Sent by <a href="https://github.com/Sumit0ubey">Email Service API</a> • All rights reserved © 2025<br />
+          Sent by <a href="{WEBSITE_LINK}"> MailApix API </a> • All rights reserved © 2025<br />
         </div>
       </div>
     </body>

@@ -1,7 +1,7 @@
 from EmailServiceAPI.Controller.parser import plain_text_to_advanced_html
 
 
-def mailApix_Email_Format(data, subject: str | None, company_name: str | None, company_link: str | None):
+def impressive(data, subject: str | None, company_name: str | None, company_link: str | None):
     project_info: str
     if company_name is None:
         company_name = "Sumit Dubey"
