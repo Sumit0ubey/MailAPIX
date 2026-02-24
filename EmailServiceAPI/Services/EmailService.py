@@ -175,6 +175,9 @@ class EmailService:
         system_template: "EmailService.SystemTemplate",
         *,
         data: str = "",
+        company_name: Optional[str] = None,
+        company_link: Optional[str] = None,
+        email_title: Optional[str] = None,
         iD: Optional[int] = None,
         token: Optional[str] = None,
     ) -> str:
