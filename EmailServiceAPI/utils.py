@@ -1,3 +1,4 @@
+import urllib
 from datetime import datetime
 from uuid import uuid4
 from secrets import choice
@@ -19,9 +20,16 @@ def generate_key(suffix_length=12):
 pwt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def hashPassword(password: str) -> str:
+def hash_password(password: str) -> str:
     return pwt_context.hash(password)
 
+
+def verify_password(password: str, hashed_password: str) -> bool:
+    return pwt_context.verify(password, hashed_password)
+
+
+def encodedUPI(upi_url):
+    return urllib.parse.quote(upi_url, safe='')
 
 def get_email_service(email):
     known_services = {

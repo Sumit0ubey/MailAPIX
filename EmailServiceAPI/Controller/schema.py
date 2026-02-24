@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, field_serializer
+from typing import Optional, Iterable, Union
 from datetime import datetime
-from typing import Optional
 
 from EmailServiceAPI.utils import serialize_timestamp
 
@@ -11,6 +11,7 @@ class CreateUserSchema(BaseModel):
 
 
 class GetUserSchema(BaseModel):
+    id: str
     fullName: str
     email: EmailStr
     apiToken: str
@@ -29,7 +30,8 @@ class GetUserSchema(BaseModel):
 class EmailSchema(BaseModel):
     title: str
     content: str
-    sendTo: EmailStr
+    sendTo: Union[str, Iterable[str]]
+    customHtml: Optional[str] = None
 
 
 class EmailWithPasskey(EmailSchema):
@@ -38,6 +40,7 @@ class EmailWithPasskey(EmailSchema):
 
 class SecureAccount(BaseModel):
     email: EmailStr
+    oldPassword: Optional[str] = ""
     setPassword: str
     confirmPassword: str
 
@@ -45,6 +48,5 @@ class SecureAccount(BaseModel):
         from_attributes = True
 
 
-class Data(BaseModel):
+class Password(BaseModel):
     password: Optional[str] = ""
-

@@ -1,20 +1,15 @@
 import asyncio
-
-from fastapi import APIRouter, status, Header, Depends, HTTPException
+from os import getenv
+from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy import and_
-from passlib.hash import bcrypt
-from dotenv import load_dotenv
-from os import getenv
+from fastapi import APIRouter, status, Header, Depends
 
-from EmailServiceAPI.Controller.writer import sendMail
-from EmailServiceAPI.schema import CreateUserSchema, GetUserSchema, SecureAccount, Data
-from EmailServiceAPI.database import get_db
-from EmailServiceAPI.models import User
-from EmailServiceAPI.utils import generate_key, hashPassword
-
+from EmailServiceAPI.Controller.schema import CreateUserSchema, GetUserSchema, SecureAccount
+from EmailServiceAPI.Services.EmailService import EmailService
+from EmailServiceAPI.Services.UserServices import UserService
+from EmailServiceAPI.Controller.schema import Password
+from EmailServiceAPI.Controller.database import get_db
 
 load_dotenv()
 
@@ -23,90 +18,115 @@ PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY')
 
 router = APIRouter(prefix="/users", tags=["User"])
 
+def get_user_service(db: AsyncSession = Depends(get_db)):
+    return UserService(db)
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def register(user: CreateUserSchema, db: AsyncSession = Depends(get_db)):
-    key = generate_key()
-    new_user = User(apiToken=key, password=hashPassword(""), **user.dict())
-    db.add(new_user)
-    await db.commit()
-    await db.refresh(new_user)
+async def register(user: CreateUserSchema, service: UserService = Depends(get_user_service)):
+    new_user = await service.create_user(user)
 
-    is_email_send = await asyncio.to_thread(sendMail, username=EMAIL, password=PASSKEY, _to=new_user.email,
-                                            subject="Welcome to Email Service API - Registration Successful",
-                                            data="", template_id=5, iD=new_user.id, token=new_user.apiToken)
+    if not new_user:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "User cannot be created or email already exists"})
+
+    is_email_send = await asyncio.to_thread(
+        lambda: EmailService.send_system_mail(
+            username=EMAIL,
+            password=PASSKEY,
+            to=new_user.email,
+            subject="Welcome to MailApix API - Registration Successful",
+            system_template="registration",
+            data="",
+            iD=new_user.id,
+            token=new_user.apiToken
+        )
+    )
 
     if not is_email_send:
-        raise HTTPException(status_code=500, detail="Failed to send email")
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": "Failed to send email"})
 
-    return {"Message": "We have send your credential to your email please check it.."}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "We have send your credential to your email. please check it.."})
 
 
 @router.get("/info", status_code=status.HTTP_302_FOUND, response_model=GetUserSchema)
-async def info(token: str = Header(...), db: AsyncSession = Depends(get_db)):
-    user = await db.execute(select(User).where(User.apiToken == token))
-    user = user.scalar_one_or_none()
+async def info(user_id: str = Header(...), service: UserService = Depends(get_user_service)):
+
+    user = await service.get_user_details_by_id(user_id)
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Token")
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "User does not exists"})
 
-    return GetUserSchema(fullName=user.fullName, email=user.email, apiToken=user.apiToken, isPaidUser=user.isPaidUser, numberOfEmailSend=user.numberOfEmailSend, createdAt=user.createdAt)
+    return GetUserSchema(
+        id=user.id,
+        fullName=user.fullName,
+        email=user.email,
+        apiToken=user.apiToken,
+        isPaidUser=user.isPaidUser,
+        numberOfEmailSend=user.numberOfEmailSend,
+        createdAt=user.createdAt
+    )
 
 
-@router.get("/upgrade", status_code=status.HTTP_200_OK)
-async def becomePaidUser(token: str = Header(...), db: AsyncSession = Depends(get_db)):
-    user = await db.execute(select(User).where(User.apiToken == token))
-    user = user.scalar_one_or_none()
+@router.get("/upgrade", status_code=status.HTTP_202_ACCEPTED)
+async def becomePaidUser(user_id: str = Header(...), service: UserService = Depends(get_user_service)):
+    user = await service.get_user(user_id)
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Token")
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "User does not exists"})
 
-    is_email_send = await asyncio.to_thread(sendMail, username=EMAIL, password=PASSKEY, _to=user.email, subject="Your Upgrade Plan - increase your email quota",
-                                            data="", template_id=4)
+    is_email_send = await asyncio.to_thread(
+        lambda: EmailService.send_system_mail(
+            username=EMAIL,
+            password=PASSKEY,
+            to=user.email,
+            subject="Your Upgrade Plan - increase your email quota",
+            system_template="packages"
+        )
+    )
 
     if not is_email_send:
-        raise HTTPException(status_code=500, detail="Failed to send email")
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": "Failed to send email"})
 
-    return {"Message": "We have send you an email please check it.."}
+    return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"Message": "We have send you an email please check it.."})
 
 
 @router.post("/newToken/{id}", status_code=status.HTTP_202_ACCEPTED)
-async def newToken(id: int, data: Data, token: str = Header(...), db: AsyncSession = Depends(get_db)):
-    user = await db.execute(select(User).where(and_(User.id == id, User.apiToken == token)))
-    user = user.scalar_one_or_none()
+async def newToken(user_id: str, password: Password, token: str = Header(...), service: UserService = Depends(get_user_service)):
+    user = await service.update_user_token(user_id=user_id, token=token, password=password.password)
 
-    if not user and not bcrypt.verify(data.password, user.password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Attempt of Unauthorized Access")
+    if not user:
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized Access"})
 
-    key = generate_key()
-    user.apiToken = key
-    await db.commit()
-    await db.refresh(user)
-
-    is_email_send = await asyncio.to_thread(sendMail, username=EMAIL,
-                                            password=PASSKEY, _to=user.email,
-                                            subject="Email Service API - Token Changed Successful",
-                                            data="", template_id=6, token=user.apiToken)
+    is_email_send = await asyncio.to_thread(
+        lambda: EmailService.send_system_mail(
+            username=EMAIL,
+            password=PASSKEY,
+            to=user.email,
+            subject="MailApix API - Token Changed Successful",
+            system_template="tokenrevert",
+            token=user.apiToken
+        )
+    )
 
     if not is_email_send:
-        raise HTTPException(status_code=500, detail="Failed to send email")
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": "Failed to send email"})
 
-    return {"Message": "We have send you an email with your new token please check it.."}
+    return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"Message": "We have send you an email with your new token please check it.."})
 
 
 @router.put("/secureAccount{id}", status_code=status.HTTP_202_ACCEPTED)
-async def setPassword(id: int, data: SecureAccount, token: str = Header(...), db: AsyncSession = Depends(get_db)):
+async def setPassword(user_id: str, data: SecureAccount, token: str = Header(...), service: UserService = Depends(get_user_service)):
     if data.setPassword != data.confirmPassword:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Mis-Match - Password should be same")
+        return JSONResponse(status_code=status.HTTP_409_CONFLICT, content={"message": "Password does not match"})
 
-    user = await db.execute(select(User).where(and_(User.id == id, User.apiToken == token, User.email == data.email)))
-    user = user.scalar_one_or_none()
+    user = await service.update_set_password(
+        user_id=user_id,
+        email=data.email,
+        token=token,
+        new_password=data.setPassword,
+        old_password=data.oldPassword
+    )
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Attempt of Unauthorized Access")
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized Access"})
 
-    user.password = hashPassword(data.setPassword)
-    await db.commit()
-    await db.refresh(user)
-
-    return JSONResponse(content={"message": "Now your Account is Secure | Password is set"}, status_code=202)
+    return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"message": "Now your Account is Secure | Password is set"})

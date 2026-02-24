@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.pool import NullPool
@@ -12,7 +14,7 @@ HOSTNAME = getenv('DATABASE_HOSTNAME')
 PORT = getenv('DATABASE_PORT')
 NAME = getenv('DATABASE_NAME')
 
-DATABASE_URL = f'postgresql+asyncpg://{USERNAME}:{PASSWORD}@{HOSTNAME}:{PORT}/{NAME}'
+DATABASE_URL = f'postgresql+asyncpg://{USERNAME}:{PASSWORD}@{HOSTNAME}/{NAME}?ssl=require'
 
 engine = create_async_engine(DATABASE_URL, echo=False, poolclass=NullPool)
 
