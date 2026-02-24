@@ -77,7 +77,7 @@ async def defaultEmailService(email: EmailSchema, token: str = Header(...), serv
         lambda: EmailService.send_mail(
             username=EMAIL,
             password=PASSKEY,
-            to=user.email,
+            to=email.sendTo,
             subject=email_title,
             template_id=template_id,
             data=email.content,
