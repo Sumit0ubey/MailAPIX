@@ -1,7 +1,21 @@
-__pycache__
-venv\
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment files
 .env
 **/.env
-.idea
-.venv
-/venv
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
