@@ -14,7 +14,21 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(models.Base.metadata.create_all)
     yield
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    title="MailApix API",
+    version="2.05.9",
+    docs_url="/documentation",
+    description="""
+    API for sending emails, managing users, tokens, and templates.
+    
+    ### Note
+    - All request must include required headers.
+    - Rate limits apply
+    """,
+    summary="MailApix API",
+    redoc_url=None,
+)
 
 app.add_middleware(
     CORSMiddleware,

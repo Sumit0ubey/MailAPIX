@@ -21,7 +21,48 @@ router = APIRouter(prefix="/email", tags=["Email_Service"])
 def get_user_service(db: AsyncSession = Depends(get_db)):
     return UserService(db)
 
-@router.post("/", status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/",
+    summary="Sends email",
+    description="""
+    Sends an email using authenticated user's SMTP credentials.
+    
+    **Required headers**
+    - `token`: user's current token
+    
+    **Optional headers**
+    - `email title`: Title that appears on the inbox (Email Subject)
+    - `Template id`: Templates for sending email (more detail at the end)
+    - `Company name`: Company name
+    - `Company link`: Company link
+    
+    **Required Body Parameters**
+    - `Title`: Email Title
+    - `content`: Email content
+    - `sendTo`: Email address of the recipient
+    - `passKey`: Password of the email (usually App Password)
+    
+    **Optional Body Parameters**
+    - `customHtml`: Instead of template id user can pass their own
+    
+    **Limits**
+    - quota checks are applied
+    
+    **TEMPLATES**
+    - `Range`: Template id ranges from 0 to 4
+    - `0`: For simple text based email (no html)
+    - `1 - 3`: Pre-defined html templates
+    - `4`: For if user providing custom html  
+    
+    """,
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={
+        202:{"description":"Email send successfully"},
+        401:{"description":"Unauthorized access"},
+        403:{"description": "Maximum quota exceeded"},
+        500:{"description":"Internal Server Error"}
+    }
+)
 async def sendEmail(email: EmailWithPasskey, token: str = Header(...), service: UserService = Depends(get_user_service),
                     company_name: str = None, company_link: str = None, email_title: str = None, template_id: int = Query(0, ge=0, le=4)):
     user = await service.get_user_by_token(token)
@@ -61,7 +102,47 @@ async def sendEmail(email: EmailWithPasskey, token: str = Header(...), service: 
     return JSONResponse(content=content, status_code=status.HTTP_202_ACCEPTED)
 
 
-@router.post("/default", status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/default",
+    summary="Sends Email",
+    description="""
+     Sends an email using system mail.
+    
+    **Required headers**
+    - `token`: user's current token
+    
+    **Optional headers**
+    - `email title`: Title that appears on the inbox (Email Subject)
+    - `Template id`: Templates for sending email (more detail at the end)
+    - `Company name`: Company name
+    - `Company link`: Company link
+    
+    **Required Body Parameters**
+    - `Title`: Email Title
+    - `content`: Email content
+    - `sendTo`: Email address of the recipient
+    
+    **Optional Body Parameters**
+    - `customHtml`: Instead of template id user can pass their own
+    
+    ***Limits*
+    - quota checks are applied
+    
+    **TEMPLATES**
+    - `Range`: Template id ranges from 0 to 4
+    - `0`: For simple text based email (no html)
+    - `1 - 3`: Pre-defined html templates
+    - `4`: For if user providing custom html  
+    
+    """,
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={
+        202:{"description":"Email send successfully"},
+        401:{"description":"Unauthorized access"},
+        403:{"description": "Maximum quota exceeded"},
+        500:{"description":"Internal Server Error"}
+    }
+)
 async def defaultEmailService(email: EmailSchema, token: str = Header(...), service: UserService = Depends(get_user_service),
                               company_name: str = None, company_link: str = None, email_title: str = None, template_id: int = Query(0, ge=0, le=4)):
     user = await service.get_user_by_token(token)

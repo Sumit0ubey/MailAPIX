@@ -21,7 +21,24 @@ router = APIRouter(prefix="/users", tags=["User"])
 def get_user_service(db: AsyncSession = Depends(get_db)):
     return UserService(db)
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/",
+    summary="User Registration",
+    description="""
+    Register a new user.
+    
+    **Required headers**
+    - `Full Name`: user's full name
+    - `Email`: user's email
+    
+    """,
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        201:{"description": "User Registration Successful"},
+        404:{"description": "User does not exists"},
+        500:{"description": "Internal Server Error"},
+    }
+)
 async def register(user: CreateUserSchema, service: UserService = Depends(get_user_service)):
     new_user = await service.create_user(user)
 
@@ -47,7 +64,23 @@ async def register(user: CreateUserSchema, service: UserService = Depends(get_us
     return JSONResponse(status_code=status.HTTP_201_CREATED, content={"message": "We have send your credential to your email. please check it.."})
 
 
-@router.get("/info", status_code=status.HTTP_302_FOUND, response_model=GetUserSchema)
+@router.get(
+    "/info",
+    summary="User Info",
+    description="""
+    Gives the information of the user.
+    
+    **Required headers**
+    - `user id`: user's id
+    
+    """,
+    status_code=status.HTTP_302_FOUND,
+    response_model=GetUserSchema,
+    responses={
+        302:{"description": "User Info fetched successfully"},
+        404:{"description":"User does not exists"}
+    }
+)
 async def info(user_id: str = Header(...), service: UserService = Depends(get_user_service)):
 
     user = await service.get_user_details_by_id(user_id)
@@ -66,7 +99,23 @@ async def info(user_id: str = Header(...), service: UserService = Depends(get_us
     )
 
 
-@router.get("/upgrade", status_code=status.HTTP_202_ACCEPTED)
+@router.get(
+    "/upgrade",
+    summary="User Upgrade Plan",
+    description="""
+    Sends Upgrade Plan Email to the user.
+    
+    **Required headers**
+    - `user id`: user's id
+    
+    """,
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={
+        202:{"description":"Upgrade plan send successfully"},
+        404:{"description":"User does not exists"},
+        505:{"description":"Internal Server Error"}
+    }
+)
 async def becomePaidUser(user_id: str = Header(...), service: UserService = Depends(get_user_service)):
     user = await service.get_user(user_id)
 
@@ -89,7 +138,27 @@ async def becomePaidUser(user_id: str = Header(...), service: UserService = Depe
     return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"Message": "We have send you an email please check it.."})
 
 
-@router.post("/newToken/{id}", status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/newToken/{id}",
+    summary="Generates new token",
+    description="""
+    Generates new token and send it's to the user's mail.
+    
+    **Required headers**
+    - `user id`: user's id
+    - `token`: user's current token
+    
+    **Optional Body Parameters**
+    - `password`: user's password (if set any else leave it)
+    
+    """,
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={
+        202:{"description":"New Token Generated Successfully"},
+        401:{"description":"Unauthorized Access"},
+        500:{"description":"Internal Server Error"}
+    }
+)
 async def newToken(user_id: str, password: Password, token: str = Header(...), service: UserService = Depends(get_user_service)):
     user = await service.update_user_token(user_id=user_id, token=token, password=password.password)
 
@@ -113,7 +182,32 @@ async def newToken(user_id: str, password: Password, token: str = Header(...), s
     return JSONResponse(status_code=status.HTTP_202_ACCEPTED, content={"Message": "We have send you an email with your new token please check it.."})
 
 
-@router.put("/secureAccount{id}", status_code=status.HTTP_202_ACCEPTED)
+@router.put(
+    "/secureAccount{id}",
+    summary="Sets account password",
+    description="""
+    Sets new account password.
+    
+    **Required headers**
+    - `user id`: user's id
+    - `token`: user's current token
+    
+    **Optional Body Parameters**
+    - `old password`: old password (if set any else leave it)
+    
+    **Required Body Parameters**
+    - `new password`: new password
+    - `confirm password`: re-enter the same new password here
+    
+    """,
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={
+        202:{"description":"New Password Set Successfully"},
+        401:{"description":"Unauthorized Access"},
+        409:{"description":"New & Confirm Password does not match"},
+        500:{"description":"Internal Server Error"}
+    }
+)
 async def setPassword(user_id: str, data: SecureAccount, token: str = Header(...), service: UserService = Depends(get_user_service)):
     if data.setPassword != data.confirmPassword:
         return JSONResponse(status_code=status.HTTP_409_CONFLICT, content={"message": "Password does not match"})
