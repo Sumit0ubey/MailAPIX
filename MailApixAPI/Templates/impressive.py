@@ -1,4 +1,4 @@
-from EmailServiceAPI.Controller.parser import plain_text_to_advanced_html
+from MailApixAPI.Controller.parser import plain_text_to_advanced_html
 
 
 def impressive(data, subject: str | None, company_name: str | None, company_link: str | None):

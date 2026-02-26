@@ -3,9 +3,9 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
-from EmailServiceAPI.Controller.database import engine
-from EmailServiceAPI.Routers import user, email
-from EmailServiceAPI.Controller import models
+from MailApixAPI.Controller.database import engine
+from MailApixAPI.Routers import user, email
+from MailApixAPI.Controller import models
 
 
 @asynccontextmanager

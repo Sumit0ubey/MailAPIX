@@ -5,11 +5,11 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, status, Header, Depends
 
-from EmailServiceAPI.Controller.schema import CreateUserSchema, GetUserSchema, SecureAccount
-from EmailServiceAPI.Services.EmailService import EmailService
-from EmailServiceAPI.Services.UserServices import UserService
-from EmailServiceAPI.Controller.schema import Password
-from EmailServiceAPI.Controller.database import get_db
+from MailApixAPI.Controller.schema import CreateUserSchema, GetUserSchema, SecureAccount
+from MailApixAPI.Services.EmailService import EmailService
+from MailApixAPI.Services.UserServices import UserService
+from MailApixAPI.Controller.schema import Password
+from MailApixAPI.Controller.database import get_db
 
 load_dotenv()
 

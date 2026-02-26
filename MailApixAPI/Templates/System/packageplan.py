@@ -1,7 +1,7 @@
 from os import getenv
 from dotenv import load_dotenv
 
-from EmailServiceAPI.utils import encodedUPI
+from MailApixAPI.utils import encodedUPI
 
 load_dotenv()
 

@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, field_serializer
 from typing import Optional, Iterable, Union
 from datetime import datetime
 
-from EmailServiceAPI.utils import serialize_timestamp
+from MailApixAPI.utils import serialize_timestamp
 
 
 class CreateUserSchema(BaseModel):

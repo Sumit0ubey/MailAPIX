@@ -1,4 +1,4 @@
-from EmailServiceAPI.Controller.parser import plain_text_to_advanced_html
+from MailApixAPI.Controller.parser import plain_text_to_advanced_html
 
 
 def simple(data):

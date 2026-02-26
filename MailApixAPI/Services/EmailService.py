@@ -15,14 +15,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import formataddr
 
-from EmailServiceAPI.Templates.cool import cool
-from EmailServiceAPI.Templates.amazing import Amazing
-from EmailServiceAPI.Templates.simple import simple
-from EmailServiceAPI.Templates.impressive import impressive
+from MailApixAPI.Templates.cool import cool
+from MailApixAPI.Templates.amazing import Amazing
+from MailApixAPI.Templates.simple import simple
+from MailApixAPI.Templates.impressive import impressive
 
-from EmailServiceAPI.Templates.System.tokenrevert import tokenRevert
-from EmailServiceAPI.Templates.System.packageplan import packagesPlan
-from EmailServiceAPI.Templates.System.registration import registrationEmail
+from MailApixAPI.Templates.System.tokenrevert import tokenRevert
+from MailApixAPI.Templates.System.packageplan import packagesPlan
+from MailApixAPI.Templates.System.registration import registrationEmail
 
 
 logger = logging.getLogger("EmailService")

@@ -3,9 +3,9 @@ from pydantic import EmailStr
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from EmailServiceAPI.utils import generate_key, hash_password, verify_password
-from EmailServiceAPI.Controller.schema import CreateUserSchema
-from EmailServiceAPI.Controller.models import User
+from MailApixAPI.utils import generate_key, hash_password, verify_password
+from MailApixAPI.Controller.schema import CreateUserSchema
+from MailApixAPI.Controller.models import User
 
 
 class UserService:

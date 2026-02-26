@@ -3,7 +3,7 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 import uuid
 
-from EmailServiceAPI.Controller.database import Base
+from MailApixAPI.Controller.database import Base
 
 
 class User(Base):
