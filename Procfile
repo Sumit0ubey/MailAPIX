@@ -1,1 +1,1 @@
-web: gunicorn -k uvicorn.workers.UvicornWorker EmailServiceAPI.main:app
+web: gunicorn -k uvicorn.workers.UvicornWorker MailApixAPI.main:app
