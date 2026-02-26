@@ -1,5 +1,7 @@
 import asyncio
 from os import getenv
+from textwrap import dedent
+
 from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,18 +26,18 @@ def get_user_service(db: AsyncSession = Depends(get_db)):
 @router.post(
     "/",
     summary="User Registration",
-    description="""
+    description=dedent("""
     Register a new user.
     
     **Required headers**
     - `Full Name`: user's full name
     - `Email`: user's email
     
-    """,
+    """),
     status_code=status.HTTP_201_CREATED,
     responses={
         201:{"description": "User Registration Successful"},
-        404:{"description": "User does not exists"},
+        404:{"description": "User cannot be created or email already exists"},
         500:{"description": "Internal Server Error"},
     }
 )
@@ -67,13 +69,13 @@ async def register(user: CreateUserSchema, service: UserService = Depends(get_us
 @router.get(
     "/info",
     summary="User Info",
-    description="""
+    description=dedent("""
     Gives the information of the user.
     
     **Required headers**
     - `user id`: user's id
     
-    """,
+    """),
     status_code=status.HTTP_302_FOUND,
     response_model=GetUserSchema,
     responses={
@@ -102,13 +104,13 @@ async def info(user_id: str = Header(...), service: UserService = Depends(get_us
 @router.get(
     "/upgrade",
     summary="User Upgrade Plan",
-    description="""
+    description=dedent("""
     Sends Upgrade Plan Email to the user.
     
     **Required headers**
     - `user id`: user's id
     
-    """,
+    """),
     status_code=status.HTTP_202_ACCEPTED,
     responses={
         202:{"description":"Upgrade plan send successfully"},
@@ -141,7 +143,7 @@ async def becomePaidUser(user_id: str = Header(...), service: UserService = Depe
 @router.post(
     "/newToken/{id}",
     summary="Generates new token",
-    description="""
+    description=dedent("""
     Generates new token and send it's to the user's mail.
     
     **Required headers**
@@ -151,7 +153,7 @@ async def becomePaidUser(user_id: str = Header(...), service: UserService = Depe
     **Optional Body Parameters**
     - `password`: user's password (if set any else leave it)
     
-    """,
+    """),
     status_code=status.HTTP_202_ACCEPTED,
     responses={
         202:{"description":"New Token Generated Successfully"},
@@ -185,7 +187,7 @@ async def newToken(user_id: str, password: Password, token: str = Header(...), s
 @router.put(
     "/secureAccount{id}",
     summary="Sets account password",
-    description="""
+    description=dedent("""
     Sets new account password.
     
     **Required headers**
@@ -199,7 +201,7 @@ async def newToken(user_id: str, password: Password, token: str = Header(...), s
     - `new password`: new password
     - `confirm password`: re-enter the same new password here
     
-    """,
+    """),
     status_code=status.HTTP_202_ACCEPTED,
     responses={
         202:{"description":"New Password Set Successfully"},

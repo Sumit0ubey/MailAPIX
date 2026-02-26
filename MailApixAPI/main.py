@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
@@ -19,13 +21,13 @@ app = FastAPI(
     title="MailApix API",
     version="2.05.9",
     docs_url="/documentation",
-    description="""
+    description=dedent("""
     API for sending emails, managing users, tokens, and templates.
     
     ### Note
     - All request must include required headers.
     - Rate limits apply
-    """,
+    """),
     summary="MailApix API",
     redoc_url=None,
 )

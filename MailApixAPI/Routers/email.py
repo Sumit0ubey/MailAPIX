@@ -1,5 +1,7 @@
 import asyncio
 from os import getenv
+from textwrap import dedent
+
 from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,7 +26,7 @@ def get_user_service(db: AsyncSession = Depends(get_db)):
 @router.post(
     "/",
     summary="Sends email",
-    description="""
+    description=dedent("""
     Sends an email using authenticated user's SMTP credentials.
     
     **Required headers**
@@ -54,7 +56,7 @@ def get_user_service(db: AsyncSession = Depends(get_db)):
     - `1 - 3`: Pre-defined html templates
     - `4`: For if user providing custom html  
     
-    """,
+    """),
     status_code=status.HTTP_202_ACCEPTED,
     responses={
         202:{"description":"Email send successfully"},
@@ -105,7 +107,7 @@ async def sendEmail(email: EmailWithPasskey, token: str = Header(...), service: 
 @router.post(
     "/default",
     summary="Sends Email",
-    description="""
+    description=dedent("""
      Sends an email using system mail.
     
     **Required headers**
@@ -125,7 +127,7 @@ async def sendEmail(email: EmailWithPasskey, token: str = Header(...), service: 
     **Optional Body Parameters**
     - `customHtml`: Instead of template id user can pass their own
     
-    ***Limits*
+    **Limits**
     - quota checks are applied
     
     **TEMPLATES**
@@ -134,7 +136,7 @@ async def sendEmail(email: EmailWithPasskey, token: str = Header(...), service: 
     - `1 - 3`: Pre-defined html templates
     - `4`: For if user providing custom html  
     
-    """,
+    """),
     status_code=status.HTTP_202_ACCEPTED,
     responses={
         202:{"description":"Email send successfully"},
