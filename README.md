@@ -189,8 +189,8 @@ MailApixAPI/
 ### 1) Clone and install
 
 ```bash
-git clone <your-repo-url>
-cd EmaiServiceApp
+git clone https://github.com/Sumit0ubey/MailAPIX
+cd MailApixAPI
 
 python -m venv .venv
 # Windows
