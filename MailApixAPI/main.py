@@ -30,6 +30,7 @@ app = FastAPI(
     """),
     summary="MailApix API",
     redoc_url=None,
+    openapi_url=None,
 )
 
 app.add_middleware(
