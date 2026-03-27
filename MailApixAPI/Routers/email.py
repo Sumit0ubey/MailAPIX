@@ -15,8 +15,8 @@ from MailApixAPI.utils import get_email_service
 
 load_dotenv()
 
-EMAIL = getenv('SYSTEM_EMAIL', 'automatic634suriko@gmail.com')
-PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY', 'utfambvyhhxiuvuy')
+EMAIL = getenv('SYSTEM_EMAIL')
+PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY')
 
 router = APIRouter(prefix="/email", tags=["Email_Service"])
 

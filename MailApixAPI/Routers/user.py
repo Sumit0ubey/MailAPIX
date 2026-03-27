@@ -17,8 +17,8 @@ from MailApixAPI.Controller.database import get_db
 
 load_dotenv()
 
-EMAIL = getenv('SYSTEM_EMAIL', 'automatic634suriko@gmail.com')
-PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY', 'utfambvyhhxiuvuy')
+EMAIL = getenv('SYSTEM_EMAIL')
+PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY')
 REVOKE_KEY_TTL = int(getenv('REVOKE_KEY_TTL', 240))
 
 logger = LoggerFactory.get_logger(__name__)
