@@ -54,12 +54,49 @@ class UserService:
         )
 
 
+    async def update_revoke_token(self, user_id: str, password: str = "") -> bool|User|None:
+        user = await self.db.scalar(
+            select(User).where(
+                User.id == user_id
+            )
+        )
+
+        if not user:
+            return None
+
+        if not verify_password(password, user.password):
+            return False
+
+        revoke_token = generate_key(24)
+        user.revokeToken = revoke_token
+
+        await self.db.commit()
+        await self.db.refresh(user)
+
+        return user
+
+    async def invalidate_revoke_token(self, user_id: str, expected_revoke_token: str) -> bool:
+        user = await self.db.scalar(
+            select(User).where(User.id == user_id)
+        )
+
+        if not user:
+            return False
+
+        if user.revokeToken != expected_revoke_token:
+            return False
+
+        user.revokeToken = generate_key(24)
+        await self.db.commit()
+
+        return True
+
     async def update_user_token(self, user_id: str, token: str, password: str = "") -> bool|User|None :
         user = await self.db.scalar(
             select(User).where(
                 and_(
                     User.id == user_id,
-                    User.apiToken == token
+                    User.revokeToken == token
                 )
             )
         )
@@ -84,7 +121,7 @@ class UserService:
             select(User).where(
                 and_(
                     User.id == user_id,
-                    User.apiToken == token,
+                    User.revokeToken == token,
                     User.email == email
                 )
             )

@@ -14,9 +14,11 @@ class GetUserSchema(BaseModel):
     id: str
     fullName: str
     email: EmailStr
-    apiToken: str
     isPaidUser: bool
     numberOfEmailSend: int
+    numberOfEmailCanSend: int
+    numberOfDefaultEmailSend: int
+    numberOfDefaultEmailCanSend: int
     createdAt: datetime
 
     @field_serializer("createdAt")

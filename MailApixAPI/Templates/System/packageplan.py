@@ -1,7 +1,7 @@
 from os import getenv
 from dotenv import load_dotenv
 
-from MailApixAPI.utils import encodedUPI
+from MailApixAPI.utils import encodedUPI, get_year
 
 load_dotenv()
 
@@ -117,7 +117,7 @@ def packagesPlan():
     </head>
     <body>
       <div class="email-container">
-        <h2>Email Quota Packages</h2>
+        <h2>MailAPIX Quota Packages</h2>
 
         <div class="card">
           <h3>Newbie Pack</h3>
@@ -157,7 +157,7 @@ def packagesPlan():
         </div>
 
         <div class="footer">
-          Sent by <a href="{WEBSITE_LINK}">MailApix API</a> • All rights reserved © 2025<br>
+          Sent by <a href="{WEBSITE_LINK}"> MailApix </a> • All rights reserved © {get_year()}<br>
           <a href="{REFUND_POLICY_LINK}">Refund Policy</a>
         </div>
       </div>

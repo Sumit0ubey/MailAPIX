@@ -12,7 +12,7 @@ HOSTNAME = getenv('DATABASE_HOSTNAME')
 PORT = getenv('DATABASE_PORT')
 NAME = getenv('DATABASE_NAME')
 
-DATABASE_URL = f'postgresql+asyncpg://{USERNAME}:{PASSWORD}@{HOSTNAME}/{NAME}?ssl=require'
+DATABASE_URL = f'postgresql+asyncpg://{"neondb_owner"}:{"npg_s0FWOLQqh9im"}@{"ep-purple-hat-a1a8znm0-pooler.ap-southeast-1.aws.neon.tech"}/{"neondb"}?ssl=require'
 
 engine = create_async_engine(DATABASE_URL, echo=False, poolclass=NullPool)
 

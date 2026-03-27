@@ -1,19 +1,19 @@
 from dotenv import load_dotenv
-from datetime import datetime
 from os import getenv
+
+from MailApixAPI.utils import get_year
 
 load_dotenv()
 
 WEBSITE_LINK = getenv("WEBSITE_LINK", "#")
 
 def registrationEmail(iD: int, token: str):
-    now = datetime.now()
     return f"""
     <html lang="en">
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Registration Successful - Email Service API</title>
+      <title>Registration Successful - MailAPIX</title>
       <style>
         body {{
           font-family: Arial, sans-serif;
@@ -96,8 +96,8 @@ def registrationEmail(iD: int, token: str):
         <h2>Registration Successful</h2>
 
         <div class="card">
-          <h3>Welcome to MailApix API</h3>
-          <p>Thank you for registering with Email Service API. Below are your credentials:</p>
+          <h3>Welcome to MailApix</h3>
+          <p>Thank you for registering with us. Below are your credentials:</p>
           <div class="credentials">
             ID: {iD} <br />
             Token: {token}
@@ -113,7 +113,7 @@ def registrationEmail(iD: int, token: str):
         </div>
 
         <div class="footer">
-          Sent by <a href="{WEBSITE_LINK}">MailApix API</a> • All rights reserved © {now.year}<br />
+          Sent by <a href="{WEBSITE_LINK}"> MailApix </a> • All rights reserved © {get_year()}<br />
         </div>
       </div>
     </body>

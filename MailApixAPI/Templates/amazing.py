@@ -1,9 +1,8 @@
-from datetime import datetime
 from MailApixAPI.Controller.parser import plain_text_to_advanced_html
+from MailApixAPI.utils import get_year
 
 
 def Amazing(data, email_title: str = None, company_name: str = None, company_link: str = None):
-    now = datetime.now()
     if email_title is None: email_title = "You got new message"
     if company_name is None: company_name = ""
     if company_link is None: company_link = "#"
@@ -102,7 +101,7 @@ def Amazing(data, email_title: str = None, company_name: str = None, company_lin
           </div>
           <div class="footer">
             <p>
-              © {now.year} <a href="{company_link}" target="_blank">{company_name}</a> — All rights reserved.
+              © {get_year()} <a href="{company_link}" target="_blank">{company_name}</a> — All rights reserved.
             </p>
           </div>
         </div>

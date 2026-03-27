@@ -6,6 +6,25 @@ from string import ascii_letters, digits
 from passlib.context import CryptContext
 
 
+def get_year():
+    return datetime.today().year
+
+def get_month():
+    return datetime.today().month
+
+def get_day():
+    return datetime.today().day
+
+def get_hour():
+    return datetime.today().hour
+
+def get_minute():
+    return datetime.today().minute
+
+def get_timestamp():
+    return datetime.today().timestamp()
+
+
 def serialize_timestamp(dt: datetime) -> str:
     return dt.strftime("%d-%m-%Y")
 

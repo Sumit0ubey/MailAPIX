@@ -211,6 +211,12 @@ Create a `.env` file in project root (see variables below).
 uvicorn MailApixAPI.main:app --reload
 ```
 
+In a second terminal, run Celery worker for background jobs:
+
+```bash
+celery -A MailApixAPI.celery_app:celery_app worker --loglevel=info
+```
+
 Default local URL: `http://127.0.0.1:8000`
 
 ---
@@ -227,6 +233,10 @@ DATABASE_NAME=mailapix_db
 # System email account used by /email/default and system notifications
 SYSTEM_EMAIL=you@example.com
 SYSTEM_EMAIL_PASSKEY=your_app_password
+
+# Celery (used for revoke token email + auto-expiry task)
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/1
 ```
 
 > Note: database connection is created with `ssl=require` in the current code.

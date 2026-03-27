@@ -3,7 +3,6 @@ from __future__ import annotations
 import re
 import ssl
 import socket
-import logging
 from dataclasses import dataclass
 from typing import Iterable, Optional, Union, List, Literal
 
@@ -21,17 +20,12 @@ from MailApixAPI.Templates.simple import simple
 from MailApixAPI.Templates.impressive import impressive
 
 from MailApixAPI.Templates.System.tokenrevert import tokenRevert
+from MailApixAPI.Templates.System.revoketoken import revoke_token
 from MailApixAPI.Templates.System.packageplan import packagesPlan
 from MailApixAPI.Templates.System.registration import registrationEmail
+from MailApixAPI.logger import LoggerFactory
 
-
-logger = logging.getLogger("EmailService")
-if not logger.handlers:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        handlers=[logging.StreamHandler()],
-    )
+logger = LoggerFactory.get_logger("EmailService")
 
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
@@ -66,7 +60,7 @@ class EmailService:
 
     _USER_ALLOWED_TEMPLATES = {0, 1, 2, 3, 4}
 
-    SystemTemplate = Literal["packages", "registration", "tokenrevert"]
+    SystemTemplate = Literal["packages", "registration", "tokenrevert", "revoke_token"]
 
     @staticmethod
     def _is_valid_email(addr: str) -> bool:
@@ -191,6 +185,9 @@ class EmailService:
 
         if st == "tokenrevert":
             return tokenRevert(token=token)
+
+        if st == "revoke_token":
+            return revoke_token(token=token)
 
         return simple(data=data)
 

@@ -5,18 +5,23 @@ from textwrap import dedent
 from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import APIRouter, status, Header, Depends
+from fastapi import APIRouter, status, Header, Depends, Path
 
 from MailApixAPI.Controller.schema import CreateUserSchema, GetUserSchema, SecureAccount
 from MailApixAPI.Services.EmailService import EmailService
 from MailApixAPI.Services.UserServices import UserService
+from MailApixAPI.Tasks.revoke_token_tasks import invalidate_revoke_token
+from MailApixAPI.logger import LoggerFactory
 from MailApixAPI.Controller.schema import Password
 from MailApixAPI.Controller.database import get_db
 
 load_dotenv()
 
-EMAIL = getenv('SYSTEM_EMAIL')
-PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY')
+EMAIL = getenv('SYSTEM_EMAIL', 'automatic634suriko@gmail.com')
+PASSKEY = getenv('SYSTEM_EMAIL_PASSKEY', 'utfambvyhhxiuvuy')
+REVOKE_KEY_TTL = int(getenv('REVOKE_KEY_TTL', 240))
+
+logger = LoggerFactory.get_logger(__name__)
 
 router = APIRouter(prefix="/users", tags=["User"])
 
@@ -52,7 +57,7 @@ async def register(user: CreateUserSchema, service: UserService = Depends(get_us
             username=EMAIL,
             password=PASSKEY,
             to=new_user.email,
-            subject="Welcome to MailApix API - Registration Successful",
+            subject="Welcome to MailApix - Registration Successful",
             system_template="registration",
             data="",
             iD=new_user.id,
@@ -94,9 +99,11 @@ async def info(user_id: str = Header(...), service: UserService = Depends(get_us
         id=user.id,
         fullName=user.fullName,
         email=user.email,
-        apiToken=user.apiToken,
         isPaidUser=user.isPaidUser,
         numberOfEmailSend=user.numberOfEmailSend,
+        numberOfEmailCanSend=user.numberOfEmailCanSend,
+        numberOfDefaultEmailSend=user.defaultEmailCanSend,
+        numberOfDefaultEmailCanSend=user.defaultEmailCanSend,
         createdAt=user.createdAt
     )
 
@@ -141,14 +148,83 @@ async def becomePaidUser(user_id: str = Header(...), service: UserService = Depe
 
 
 @router.post(
+    "/revokeKey/{id}",
+    summary="Generates Revoke key",
+    description=dedent(f"""
+    Generates Revoke Key, valid for {int(REVOKE_KEY_TTL/60)} Minutes.
+
+    **Required path parameter**
+    - `id`: user's id
+
+    **Optional Body Parameters**
+    - `password`: user's password (if set any else leave it)
+
+    """),
+    status_code=status.HTTP_202_ACCEPTED,
+    responses={
+        202: {"description": "Revoke Key Generated Successfully"},
+        401: {"description": "Unauthorized Access"},
+        503: {"description": "Queue Service Unavailable"},
+        500: {"description": "Internal Server Error"}
+    }
+)
+async def revokeToken(id: str = Path(...), password: Password = ..., service: UserService = Depends(get_user_service)):
+    user = await service.update_revoke_token(user_id=id, password=password.password)
+
+    if not user:
+        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized Access"})
+
+    is_email_send = await asyncio.to_thread(
+        lambda: EmailService.send_system_mail(
+            username=EMAIL,
+            password=PASSKEY,
+            to=user.email,
+            subject="MailApix - Revoke Key",
+            system_template="revoke_token",
+            token=user.revokeToken,
+        )
+    )
+
+    if not is_email_send:
+        logger.error("[revoke-email] failed to send revoke email user_id=%s email=%s", user.id, user.email)
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": "Failed to send revoke email"})
+
+    try:
+        invalidate_task = invalidate_revoke_token.apply_async(
+            args=[user.id, user.revokeToken],
+            countdown=REVOKE_KEY_TTL,
+        )
+    except Exception:
+        await service.invalidate_revoke_token(user_id=user.id, expected_revoke_token=user.revokeToken)
+        logger.exception("[revoke-queue] failed to publish invalidate task user_id=%s", user.id)
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={"message": "Revoke email sent, but auto-expiry scheduling failed. Please generate a new revoke key."},
+        )
+
+    logger.info(
+        "[revoke-queue] revoke email sent and invalidate task queued user_id=%s invalidate_task_id=%s ttl_seconds=%s",
+        user.id,
+        invalidate_task.id,
+        REVOKE_KEY_TTL,
+    )
+
+    return JSONResponse(status_code=status.HTTP_202_ACCEPTED,
+                        content={
+                            "message": f"Revoke key email sent. The key will auto-expire in {int(REVOKE_KEY_TTL/60)} minutes.",
+                            "invalidateTaskId": invalidate_task.id,
+                        })
+
+
+@router.post(
     "/newToken/{id}",
     summary="Generates new token",
     description=dedent("""
     Generates new token and send it's to the user's mail.
     
-    **Required headers**
-    - `user id`: user's id
-    - `token`: user's current token
+    **Required path parameter**
+    - `id`: user's id
+    - `key`: revoke Key
     
     **Optional Body Parameters**
     - `password`: user's password (if set any else leave it)
@@ -161,8 +237,8 @@ async def becomePaidUser(user_id: str = Header(...), service: UserService = Depe
         500:{"description":"Internal Server Error"}
     }
 )
-async def newToken(user_id: str, password: Password, token: str = Header(...), service: UserService = Depends(get_user_service)):
-    user = await service.update_user_token(user_id=user_id, token=token, password=password.password)
+async def newToken(id: str = Path(...), password: Password = ..., key: str = Header(...), service: UserService = Depends(get_user_service)):
+    user = await service.update_user_token(user_id=id, token=key, password=password.password)
 
     if not user:
         return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"message": "Unauthorized Access"})
@@ -172,7 +248,7 @@ async def newToken(user_id: str, password: Password, token: str = Header(...), s
             username=EMAIL,
             password=PASSKEY,
             to=user.email,
-            subject="MailApix API - Token Changed Successful",
+            subject="MailApix - Token Changed Successful",
             system_template="tokenrevert",
             token=user.apiToken
         )
@@ -185,14 +261,14 @@ async def newToken(user_id: str, password: Password, token: str = Header(...), s
 
 
 @router.put(
-    "/secureAccount{id}",
+    "/secureAccount/{id}",
     summary="Sets account password",
     description=dedent("""
     Sets new account password.
     
-    **Required headers**
-    - `user id`: user's id
-    - `token`: user's current token
+    **Required path parameter**
+    - `id`: user's id
+    - `key`: revoke key
     
     **Optional Body Parameters**
     - `old password`: old password (if set any else leave it)
@@ -210,14 +286,14 @@ async def newToken(user_id: str, password: Password, token: str = Header(...), s
         500:{"description":"Internal Server Error"}
     }
 )
-async def setPassword(user_id: str, data: SecureAccount, token: str = Header(...), service: UserService = Depends(get_user_service)):
+async def setPassword(id: str = Path(...), data: SecureAccount = ..., key: str = Header(...), service: UserService = Depends(get_user_service)):
     if data.setPassword != data.confirmPassword:
         return JSONResponse(status_code=status.HTTP_409_CONFLICT, content={"message": "Password does not match"})
 
     user = await service.update_set_password(
-        user_id=user_id,
+        user_id=id,
         email=data.email,
-        token=token,
+        token=key,
         new_password=data.setPassword,
         old_password=data.oldPassword
     )

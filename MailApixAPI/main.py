@@ -5,15 +5,14 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
-from MailApixAPI.Controller.database import engine
+from MailApixAPI.Controller.database import engine, Base
 from MailApixAPI.Routers import user, email
-from MailApixAPI.Controller import models
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
     yield
 
 app = FastAPI(
@@ -30,7 +29,6 @@ app = FastAPI(
     """),
     summary="MailApix API",
     redoc_url=None,
-    openapi_url=None,
 )
 
 app.add_middleware(
@@ -48,7 +46,7 @@ def home():
         "API Name": "Email Service APP",
         "Description": "This is a Async API for Sending Email to anyone at anytime",
         "Endpoints": "/, /users, /email",
-        "API Documentation": "/docs",
+        "API Documentation": "/documentation",
         "Version": "2.05.9",
         "Created By": "Sumit Dubey",
         "Contact": "sumitdubey810@outlook.com",

@@ -6,14 +6,15 @@ from MailApixAPI.utils import get_year
 load_dotenv()
 
 WEBSITE_LINK = getenv("WEBSITE_LINK", "#")
+TTL = getenv("REVOKE_KEY_TTL", 480)
 
-def tokenRevert(token: str):
+def revoke_token(token: str):
     return f"""
     <html lang="en">
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Token Change - MailAPIX</title>
+      <title>Revoke Key - MailAPIX</title>
       <style>
         body {{
           font-family: Arial, sans-serif;
@@ -93,18 +94,18 @@ def tokenRevert(token: str):
     </head>
     <body>
       <div class="email-container">
-        <h2>Revert/Change Token </h2>
+        <h2>Revoke Key </h2>
 
         <div class="card">
           <h3>Welcome to MailApix</h3>
-          <p>Thanks for sticking with us. Below is your new token:</p>
+          <p>Thanks for sticking with us. Below is your revoke key:</p>
           <div class="credentials">
-            Token: {token}
+            Revoke Key: {token}
           </div>
         </div>
 
         <div class="card">
-          <p><strong>Important:</strong> Do not share your token or this mail with anyone.</p>
+          <p><strong>Important:</strong>Valid for {int(TTL/60)} minutes.</p>
         </div>
 
         <div class="auto-note">
