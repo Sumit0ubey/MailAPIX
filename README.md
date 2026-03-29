@@ -152,6 +152,7 @@ Project overview and quick reference guide.
 ### 📐 High-Level Architecture
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 graph TB
     Client["👥 Client Layer<br/>(Web/Mobile/CLI Apps)"]
     
@@ -189,11 +190,6 @@ graph TB
     Services --> Logging
     SMTP --> EmailProviders
     
-    style Client fill:#eef3f7
-    style API fill:#f2eff3
-    style Core fill:#eff4ef
-    style Ext fill:#f6f3ee
-    style EmailProviders fill:#f5eff1
 ```
 
 ### 🔄 Data Flow Diagram
@@ -201,6 +197,7 @@ graph TB
 #### User Registration Flow
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 sequenceDiagram
     participant Client
     participant API
@@ -223,6 +220,7 @@ sequenceDiagram
 #### Email Sending Flow (Async Processing)
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 sequenceDiagram
     participant Client
     participant API
@@ -248,6 +246,7 @@ sequenceDiagram
 #### Token Refresh Flow
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 sequenceDiagram
     participant Client
     participant API
@@ -272,6 +271,7 @@ sequenceDiagram
 ### 🔀 Component Interaction Diagram
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 graph TB
     subgraph Router["🎮 FastAPI Router<br/>(Request Processing)"]
         UserR["User Router<br/>• register<br/>• getUser<br/>• newToken<br/>• revokeKey<br/>• secureAccount"]
@@ -308,17 +308,12 @@ graph TB
     EmailServ -->|connects| SMTP
     Queue -->|processes async| EmailServ
     
-    style Router fill:#f2eff3
-    style Services fill:#eff4ef
-    style Data fill:#eef3f7
-    style DB fill:#f6f3ee
-    style Queue fill:#f4eef1
-    style SMTP fill:#f1f5ee
 ```
 
 ### 📊 Database Schema Diagram
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 erDiagram
     USERS ||--o{ EMAIL_SESSIONS : sends
     USERS ||--o{ TOKENS : has
@@ -361,6 +356,7 @@ erDiagram
 ### 🔐 Authentication & Authorization Flow
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 flowchart TD
     Start["🔐 API REQUEST<br/>WITH TOKEN HEADER"] --> Extract["Extract Bearer Token<br/>from Headers"]
     Extract --> Query["Query User by Token<br/>in Database"]
@@ -379,16 +375,12 @@ flowchart TD
     QuotaError --> End2["End - Quota Error"]
     Success --> End3["End - Success"]
     
-    style Start fill:#e8edf4
-    style Proceed fill:#e9f1e9
-    style Reject fill:#f4e9eb
-    style QuotaError fill:#f5f2e6
-    style Success fill:#e9f1e9
 ```
 
 ### 📈 Scaling Architecture
 
 ```mermaid
+%%{init: {'themeCSS': '.cluster rect, .node rect, .node circle, .node ellipse, .node polygon, .edgeLabel rect, .actor, .labelBox, .note, .entityBox, .attributeBoxOdd, .attributeBoxEven, .er.entityBox, .er.attributeBoxOdd, .er.attributeBoxEven { fill: transparent !important; }'}}%%
 graph TB
     subgraph LB["🔄 Load Balancing Layer"]
         Proxy["Reverse Proxy<br/>(Nginx/HAProxy)"]
@@ -436,11 +428,6 @@ graph TB
     Redis --> Celery
     Celery --> Redis
     
-    style LB fill:#f1ebf3
-    style API fill:#ecf2e6
-    style Data fill:#f5ece8
-    style Cache fill:#f5ece8
-    style Workers fill:#e7f1ef
 ```
 
 ---

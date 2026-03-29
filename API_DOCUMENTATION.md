@@ -106,7 +106,7 @@ Content-Type: application/json
 | 404 | Not Found | `{"message": "User cannot be created or email already exists"}` |
 | 500 | Server Error | `{"message": "Failed to send email"}` |
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/users/" \
   -H "Content-Type: application/json" \
@@ -158,7 +158,7 @@ curl -X POST "https://api.mailapix.com/users/" \
 }
 ```
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X GET "https://api.mailapix.com/users/info" \
   -H "user_id: your-user-id"
@@ -185,7 +185,7 @@ curl -X GET "https://api.mailapix.com/users/info" \
 | 404 | Not Found | `{"message": "User does not exists"}` |
 | 500 | Server Error | `{"message": "Failed to send email"}` |
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X GET "https://api.mailapix.com/users/upgrade" \
   -H "user_id: your-user-id"
@@ -240,7 +240,7 @@ curl -X GET "https://api.mailapix.com/users/upgrade" \
 }
 ```
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/users/revokeKey/your-user-id" \
   -H "Content-Type: application/json" \
@@ -290,7 +290,7 @@ curl -X POST "https://api.mailapix.com/users/revokeKey/your-user-id" \
 | 401 | Unauthorized | `{"message": "Unauthorized Access"}` |
 | 500 | Server Error | `{"message": "Failed to send email"}` |
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
   -H "key: your-revoke-key" \
@@ -348,7 +348,7 @@ curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
 | 409 | Conflict | `{"message": "Password does not match"}` |
 | 500 | Server Error | `{"message": "Failed to update password"}` |
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
   -H "key: your-revoke-key" \
@@ -417,7 +417,7 @@ curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
 | 403 | Forbidden | `{"message": "Maximum quota exceeded"}` |
 | 500 | Server Error | `{"message": "Failed to send email... Check your credential and try again."}` |
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/email/?template_id=1" \
   -H "token: your-api-token" \
@@ -492,7 +492,7 @@ curl -X POST "https://api.mailapix.com/email/?template_id=1" \
 }
 ```
 
-**🔗 cURL Example**
+**🔗 CURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/email/default?template_id=1" \
   -H "token: your-api-token" \
