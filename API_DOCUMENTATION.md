@@ -2,7 +2,7 @@
 
 > **Full Reference Guide for MailApix Email Service API**
 >
-> Base URL: `https://api.mailapix.com` (or your deployment URL)  
+> Base URL: `https://api.mailapix.tech`  <br />
 > API Version: `2.05.9`  
 > Documentation Endpoint: `/documentation`
 
@@ -10,14 +10,14 @@
 
 ## 📋 Table of Contents
 
-1. [Authentication](#-authentication)
-2. [Request/Response Format](#-requestresponse-format)
-3. [User Endpoints](#-user-endpoints)
-4. [Email Endpoints](#-email-endpoints)
-5. [Templates](#-templates)
-6. [Error Handling](#-error-handling)
-7. [Rate Limits & Quotas](#-rate-limits--quotas)
-8. [Examples](#-examples)
+1. [🔐 Authentication](#-authentication)
+2. [📦 Request/Response Format](#-requestresponse-format)
+3. [👥 User Endpoints](#-user-endpoints)
+4. [📧 Email Endpoints](#-email-endpoints)
+5. [🎨 Templates](#-templates)
+6. [⚠️ Error Handling](#-error-handling)
+7. [📊 Rate Limits & Quotas](#-rate-limits--quotas)
+8. [💡 Examples](#-examples)
 
 ---
 
@@ -25,7 +25,7 @@
 
 All protected endpoints require authentication via **API Token** passed in the request header.
 
-### Token Header
+### 🎫 Token Header
 ```
 token: your-api-token-here
 ```
@@ -34,25 +34,25 @@ token: your-api-token-here
 **Validity**: Until revoked or manually reset  
 **Obtaining Token**: Provided during user registration via email
 
-### Security Notes
-- Tokens are **confidential** - never share them publicly
-- If compromised, immediately generate a new token using the revoke key flow
-- Tokens are case-sensitive
+### 🔒 Security Notes
+- 🔐 Tokens are **confidential** - never share them publicly
+- 🚨 If compromised, immediately generate a new token using the revoke key flow
+- 🔤 Tokens are case-sensitive
 
 ---
 
 ## 📦 Request/Response Format
 
-### Content-Type
+### 📋 Content-Type
 All requests and responses use **JSON** format.
 
 ```
 Content-Type: application/json
 ```
 
-### Standard Response Structure
+### 📊 Standard Response Structure
 
-**Success Response (2xx)**
+**✅ Success Response (2xx)**
 ```json
 {
   "message": "Operation completed successfully",
@@ -60,7 +60,7 @@ Content-Type: application/json
 }
 ```
 
-**Error Response (4xx, 5xx)**
+**❌ Error Response (4xx, 5xx)**
 ```json
 {
   "message": "Error description",
@@ -72,17 +72,18 @@ Content-Type: application/json
 
 ## 👥 User Endpoints
 
-### 1. Register New User
+### 1️⃣ Register New User
 **Register a new user and receive API credentials**
 
 **Endpoint**: `POST /users/`
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | Content-Type | string | Yes | `application/json` |
 
-**Request Body**
+**📥 Request Body**
 ```json
 {
   "fullName": "John Doe",
@@ -90,13 +91,14 @@ Content-Type: application/json
 }
 ```
 
-**Request Schema**
+**✔️ Request Schema**
+
 | Field | Type | Required | Validation | Description |
 |-------|------|----------|-----------|-------------|
 | fullName | string | Yes | 1-100 chars | User's full name |
 | email | string | Yes | Valid email | User's email address |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -104,7 +106,7 @@ Content-Type: application/json
 | 404 | Not Found | `{"message": "User cannot be created or email already exists"}` |
 | 500 | Server Error | `{"message": "Failed to send email"}` |
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/users/" \
   -H "Content-Type: application/json" \
@@ -114,7 +116,7 @@ curl -X POST "https://api.mailapix.com/users/" \
   }'
 ```
 
-**Response Example (201)**
+**✅ Response Example (201)**
 ```json
 {
   "message": "We have send your credential to your email. please check it.."
@@ -123,24 +125,25 @@ curl -X POST "https://api.mailapix.com/users/" \
 
 ---
 
-### 2. Get User Information
+### 2️⃣ Get User Information
 **Retrieve authenticated user's account details**
 
 **Endpoint**: `GET /users/info`
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | user_id | string | Yes | User's ID |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
 | 302 | Found | User information object (see schema below) |
 | 404 | Not Found | `{"message": "User does not exists"}` |
 
-**Response Schema**
+**📤 Response Schema**
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -155,7 +158,7 @@ curl -X POST "https://api.mailapix.com/users/" \
 }
 ```
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X GET "https://api.mailapix.com/users/info" \
   -H "user_id: your-user-id"
@@ -163,17 +166,18 @@ curl -X GET "https://api.mailapix.com/users/info" \
 
 ---
 
-### 3. Upgrade to Paid Plan
+### 3️⃣ Upgrade to Paid Plan
 **Send upgrade plan information email to user**
 
 **Endpoint**: `GET /users/upgrade`
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | user_id | string | Yes | User's ID |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -181,7 +185,7 @@ curl -X GET "https://api.mailapix.com/users/info" \
 | 404 | Not Found | `{"message": "User does not exists"}` |
 | 500 | Server Error | `{"message": "Failed to send email"}` |
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X GET "https://api.mailapix.com/users/upgrade" \
   -H "user_id: your-user-id"
@@ -189,34 +193,37 @@ curl -X GET "https://api.mailapix.com/users/upgrade" \
 
 ---
 
-### 4. Generate Revoke Key
+### 4️⃣ Generate Revoke Key
 **Generate a temporary revoke key to reset your API token (valid for 4 minutes by default)**
 
 **Endpoint**: `POST /users/revokeKey/{id}`
 
-**Path Parameters**
+**📍 Path Parameters**
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | id | string | Yes | User's ID |
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | Content-Type | string | Yes | `application/json` |
 
-**Request Body**
+**📥 Request Body**
 ```json
 {
   "password": ""
 }
 ```
 
-**Request Schema**
+**✔️ Request Schema**
+
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | password | string | No | Account password (if set) |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -225,7 +232,7 @@ curl -X GET "https://api.mailapix.com/users/upgrade" \
 | 500 | Server Error | `{"message": "Failed to send revoke email"}` |
 | 503 | Service Unavailable | `{"message": "Revoke email sent, but auto-expiry scheduling failed..."}` |
 
-**Response Schema (202)**
+**📤 Response Schema (202)**
 ```json
 {
   "message": "Revoke key email sent. The key will auto-expire in 4 minutes.",
@@ -233,7 +240,7 @@ curl -X GET "https://api.mailapix.com/users/upgrade" \
 }
 ```
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/users/revokeKey/your-user-id" \
   -H "Content-Type: application/json" \
@@ -244,35 +251,38 @@ curl -X POST "https://api.mailapix.com/users/revokeKey/your-user-id" \
 
 ---
 
-### 5. Generate New Token
+### 5️⃣ Generate New Token
 **Generate a new API token using the revoke key**
 
 **Endpoint**: `POST /users/newToken/{id}`
 
-**Path Parameters**
+**📍 Path Parameters**
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | id | string | Yes | User's ID |
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | key | string | Yes | Revoke key from previous step |
 | Content-Type | string | Yes | `application/json` |
 
-**Request Body**
+**📥 Request Body**
 ```json
 {
   "password": ""
 }
 ```
 
-**Request Schema**
+**✔️ Request Schema**
+
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | password | string | No | Account password (if set) |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -280,7 +290,7 @@ curl -X POST "https://api.mailapix.com/users/revokeKey/your-user-id" \
 | 401 | Unauthorized | `{"message": "Unauthorized Access"}` |
 | 500 | Server Error | `{"message": "Failed to send email"}` |
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
   -H "key: your-revoke-key" \
@@ -292,23 +302,25 @@ curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
 
 ---
 
-### 6. Secure Account with Password
+### 6️⃣ Secure Account with Password
 **Set or update your account password for additional security**
 
 **Endpoint**: `PUT /users/secureAccount/{id}`
 
-**Path Parameters**
+**📍 Path Parameters**
+
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | id | string | Yes | User's ID |
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | key | string | Yes | Revoke key |
 | Content-Type | string | Yes | `application/json` |
 
-**Request Body**
+**📥 Request Body**
 ```json
 {
   "email": "john@example.com",
@@ -318,7 +330,8 @@ curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
 }
 ```
 
-**Request Schema**
+**✔️ Request Schema**
+
 | Field | Type | Required | Validation | Description |
 |-------|------|----------|-----------|-------------|
 | email | string | Yes | Valid email | User's email |
@@ -326,7 +339,7 @@ curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
 | setPassword | string | Yes | Min 8 chars | New password |
 | confirmPassword | string | Yes | Must match setPassword | Confirmation of new password |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -335,7 +348,7 @@ curl -X POST "https://api.mailapix.com/users/newToken/your-user-id" \
 | 409 | Conflict | `{"message": "Password does not match"}` |
 | 500 | Server Error | `{"message": "Failed to update password"}` |
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
   -H "key: your-revoke-key" \
@@ -352,12 +365,13 @@ curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
 
 ## 📧 Email Endpoints
 
-### 1. Send Email with User SMTP Credentials
+### 1️⃣ Send Email with User SMTP Credentials
 **Send an email using the user's own SMTP credentials**
 
 **Endpoint**: `POST /email/`
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | token | string | Yes | User's API token |
@@ -367,12 +381,13 @@ curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
 | company_link | string | No | Company website link |
 | Content-Type | string | Yes | `application/json` |
 
-**Query Parameters**
+**📋 Query Parameters**
+
 | Parameter | Type | Default | Allowed | Description |
 |-----------|------|---------|---------|-------------|
 | template_id | integer | 0 | 0-4 | Email template ID |
 
-**Request Body**
+**📥 Request Body**
 ```json
 {
   "title": "Welcome",
@@ -383,7 +398,8 @@ curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
 }
 ```
 
-**Request Schema**
+**✔️ Request Schema**
+
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | title | string | Yes | Email title/heading |
@@ -392,7 +408,7 @@ curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
 | passKey | string | Yes | SMTP app password |
 | customHtml | string | No | Custom HTML (only if template_id = 4) |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -401,7 +417,7 @@ curl -X PUT "https://api.mailapix.com/users/secureAccount/your-user-id" \
 | 403 | Forbidden | `{"message": "Maximum quota exceeded"}` |
 | 500 | Server Error | `{"message": "Failed to send email... Check your credential and try again."}` |
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/email/?template_id=1" \
   -H "token: your-api-token" \
@@ -419,12 +435,13 @@ curl -X POST "https://api.mailapix.com/email/?template_id=1" \
 
 ---
 
-### 2. Send Email with System SMTP Credentials
+### 2️⃣ Send Email with System SMTP Credentials
 **Send an email using the system's default SMTP credentials (uses your free quota)**
 
 **Endpoint**: `POST /email/default`
 
-**Headers**
+**📝 Headers**
+
 | Header | Type | Required | Description |
 |--------|------|----------|-------------|
 | token | string | Yes | User's API token |
@@ -434,12 +451,13 @@ curl -X POST "https://api.mailapix.com/email/?template_id=1" \
 | company_link | string | No | Company website link |
 | Content-Type | string | Yes | `application/json` |
 
-**Query Parameters**
+**📋 Query Parameters**
+
 | Parameter | Type | Default | Allowed | Description |
 |-----------|------|---------|---------|-------------|
 | template_id | integer | 0 | 0-4 | Email template ID |
 
-**Request Body**
+**📥 Request Body**
 ```json
 {
   "title": "Welcome",
@@ -449,7 +467,8 @@ curl -X POST "https://api.mailapix.com/email/?template_id=1" \
 }
 ```
 
-**Request Schema**
+**✔️ Request Schema**
+
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | title | string | Yes | Email title/heading |
@@ -457,7 +476,7 @@ curl -X POST "https://api.mailapix.com/email/?template_id=1" \
 | sendTo | string or array | Yes | Recipient email or array of emails |
 | customHtml | string | No | Custom HTML (only if template_id = 4) |
 
-**Response Codes**
+**📋 Response Codes**
 
 | Code | Status | Response |
 |------|--------|----------|
@@ -466,14 +485,14 @@ curl -X POST "https://api.mailapix.com/email/?template_id=1" \
 | 403 | Forbidden | `{"message": "Maximum quota exceeded"}` |
 | 500 | Server Error | `{"message": "Failed to send email... Check your credential and try again."}` |
 
-**Response Schema (202)**
+**📤 Response Schema (202)**
 ```json
 {
   "Message": "Email send to recipient@example.com with title Welcome using Gmail service"
 }
 ```
 
-**cURL Example**
+**🔗 cURL Example**
 ```bash
 curl -X POST "https://api.mailapix.com/email/default?template_id=1" \
   -H "token: your-api-token" \
@@ -494,7 +513,7 @@ curl -X POST "https://api.mailapix.com/email/default?template_id=1" \
 
 MailApix provides pre-built email templates or allows custom HTML. Templates are identified by ID (0-4).
 
-### Template IDs
+### 🆔 Template IDs
 
 | ID | Name | Type | Use Case | Requires Custom HTML |
 |----|------|------|----------|----------------------|
@@ -504,7 +523,7 @@ MailApix provides pre-built email templates or allows custom HTML. Templates are
 | 3 | Elegant | HTML | Marketing emails | No |
 | 4 | Custom | Custom HTML | Full control over design | Yes |
 
-### Template Parameters
+### 📝 Template Parameters
 
 Templates support dynamic variables that can be customized:
 
@@ -517,7 +536,7 @@ Templates support dynamic variables that can be customized:
 }
 ```
 
-### Custom HTML Template (ID: 4)
+### 🎯 Custom HTML Template (ID: 4)
 
 When using template ID 4, provide your own HTML:
 
@@ -530,7 +549,7 @@ When using template ID 4, provide your own HTML:
 }
 ```
 
-**Supported HTML Variables**:
+**🔤 Supported HTML Variables**:
 - `{{title}}` - Email title/subject
 - `{{content}}` - Email body
 - `{{company_name}}` - Company name
@@ -540,7 +559,7 @@ When using template ID 4, provide your own HTML:
 
 ## ⚠️ Error Handling
 
-### Common Error Codes
+### 🔴 Common Error Codes
 
 | Code | Scenario | Resolution |
 |------|----------|-----------|
@@ -552,7 +571,7 @@ When using template ID 4, provide your own HTML:
 | 500 | Server Error | Check SMTP credentials or contact support |
 | 503 | Service Unavailable | Queue service issue, try again later |
 
-### Error Response Format
+### 📄 Error Response Format
 
 ```json
 {
@@ -561,16 +580,16 @@ When using template ID 4, provide your own HTML:
 }
 ```
 
-### Handling Expired Tokens
+### ⏳ Handling Expired Tokens
 
-**Error Response**:
+**❌ Error Response**:
 ```json
 {
   "message": "Unauthorized Access"
 }
 ```
 
-**Resolution**:
+**🛠️ Resolution**:
 1. Generate a revoke key: `POST /users/revokeKey/{id}`
 2. Generate new token: `POST /users/newToken/{id}`
 3. Retry the request with new token
@@ -579,7 +598,7 @@ When using template ID 4, provide your own HTML:
 
 ## 📊 Rate Limits & Quotas
 
-### User Quotas
+### 👤 User Quotas
 
 | Tier | Free | Premium |
 |------|------|---------|
@@ -589,14 +608,14 @@ When using template ID 4, provide your own HTML:
 | **Token Expiry** | Never | Never |
 | **Revoke Key TTL** | 4 minutes | 4 minutes |
 
-### Quota Checking
+### ✅ Quota Checking
 
 Each endpoint checks quotas before sending:
 
 - `numberOfEmailSend` vs `numberOfEmailCanSend` for custom SMTP
 - `defaultEmailSend` vs `defaultEmailCanSend` for system SMTP
 
-**Response on Quota Exceeded**:
+**⛔ Response on Quota Exceeded**:
 ```json
 {
   "message": "Maximum quota exceeded",
@@ -604,7 +623,7 @@ Each endpoint checks quotas before sending:
 }
 ```
 
-### Upgrading Quota
+### 🚀 Upgrading Quota
 
 Users can upgrade to premium plans to increase their quota:
 ```bash
@@ -615,9 +634,9 @@ GET /users/upgrade
 
 ## 💡 Examples
 
-### Complete Workflow Example
+### 🧭 Complete Workflow Example
 
-#### Step 1: Register User
+#### 1️⃣ Step 1: Register User
 ```bash
 curl -X POST "http://localhost:8000/users/" \
   -H "Content-Type: application/json" \
@@ -627,17 +646,17 @@ curl -X POST "http://localhost:8000/users/" \
   }'
 ```
 
-Response:
+📩 Response:
 ```json
 {
   "message": "We have send your credential to your email. please check it.."
 }
 ```
 
-#### Step 2: Check Email for API Token
+#### 2️⃣ Step 2: Check Email for API Token
 (Check john@example.com for registration confirmation containing the API token)
 
-#### Step 3: Send Email with System SMTP
+#### 3️⃣ Step 3: Send Email with System SMTP
 ```bash
 curl -X POST "http://localhost:8000/email/default?template_id=1" \
   -H "token: <received-api-token>" \
@@ -650,20 +669,20 @@ curl -X POST "http://localhost:8000/email/default?template_id=1" \
   }'
 ```
 
-Response:
+✅ Response:
 ```json
 {
   "Message": "Email send to recipient@example.com with title Test Subject using Gmail service"
 }
 ```
 
-#### Step 4: Get User Info
+#### 4️⃣ Step 4: Get User Info
 ```bash
 curl -X GET "http://localhost:8000/users/info" \
   -H "user_id: <your-user-id>"
 ```
 
-Response:
+📋 Response:
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -678,7 +697,7 @@ Response:
 }
 ```
 
-### Multiple Recipients Example
+### 👥 Multiple Recipients Example
 
 Send email to multiple recipients:
 
@@ -694,7 +713,7 @@ curl -X POST "http://localhost:8000/email/?template_id=1" \
   }'
 ```
 
-### Custom HTML Email Example
+### 🎨 Custom HTML Email Example
 
 ```bash
 curl -X POST "http://localhost:8000/email/default?template_id=4" \
@@ -712,20 +731,20 @@ curl -X POST "http://localhost:8000/email/default?template_id=4" \
 
 ## 🔗 Additional Resources
 
-- **Interactive Documentation**: `/documentation` (Swagger UI)
-- **GitHub Repository**: [MailApix API](https://github.com/Sumit0ubey/MailAPIX)
-- **Support Email**: sumitdubey810@outlook.com
-- **Version**: 2.05.9
+- 📖 **Interactive Documentation**: `/documentation` (Swagger UI)
+- 🐙 **GitHub Repository**: [MailApix API](https://github.com/Sumit0ubey/MailAPIX)
+- 💬 **Support Email**: sumitdubey810@outlook.com
+- 🔢 **Version**: 2.05.9
 
 ---
 
 ## 📝 Notes
 
-- All timestamps are in ISO 8601 format (UTC)
-- Email addresses must be valid according to RFC 5322
-- Requests must include appropriate Content-Type headers
-- Rate limiting may apply to high-volume requests
-- The API uses asynchronous processing for reliability
+- ⏰ All timestamps are in ISO 8601 format (UTC)
+- ✉️ Email addresses must be valid according to RFC 5322
+- 📋 Requests must include appropriate Content-Type headers
+- 🚦 Rate limiting may apply to high-volume requests
+- ⚡ The API uses asynchronous processing for reliability
 
 ---
 

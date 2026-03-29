@@ -1,4 +1,4 @@
-# 📧 MailApix API
+﻿# ðŸ“§ MailApix API
 
 > Enterprise-grade async email delivery API with token-based access, quota controls, and template-driven messaging.
 
@@ -19,46 +19,46 @@
 
 ---
 
-## 📑 Table of Contents
+## ðŸ“‘ Table of Contents
 
-- [🎯 Overview](#-overview)
-- [🚀 Quick Start](#-quick-start)
-- [📚 Documentation](#-documentation)
-- [✨ Features](#-features)
-- [🏗️ System Design](#-system-design)
-- [🏗️ Architecture](#-architecture)
-- [📊 Project Structure](#-project-structure)
-- [🔌 API Endpoints](#-api-endpoints)
-- [💾 Technology Stack](#-technology-stack)
-- [🎨 Templates](#-templates)
-- [🚢 Deployment](#-deployment)
-- [🛡️ Security](#-security)
-- [📝 License](#-license)
+- [ðŸŽ¯ Overview](#-overview)
+- [ðŸš€ Quick Start](#-quick-start)
+- [ðŸ“š Documentation](#-documentation)
+- [âœ¨ Features](#-features)
+- [ðŸ—ï¸ System Design](#-system-design)
+- [ðŸ—ï¸ Architecture](#-architecture)
+- [ðŸ“Š Project Structure](#-project-structure)
+- [ðŸ”Œ API Endpoints](#-api-endpoints)
+- [ðŸ’¾ Technology Stack](#-technology-stack)
+- [ðŸŽ¨ Templates](#-templates)
+- [ðŸš¢ Deployment](#-deployment)
+- [ðŸ›¡ï¸ Security](#-security)
+- [ðŸ“ License](#-license)
 
 ---
 
-## 🎯 Overview
+## ðŸŽ¯ Overview
 
 **MailApix API** is a production-ready async email delivery backend built with FastAPI and PostgreSQL. It provides secure token-based access for users to send emails using their own SMTP credentials or the system's default service with quota-based protection.
 
-**Project Status:** ✅ **COMPLETE AND PRODUCTION READY**
+**Project Status:** âœ… **COMPLETE AND PRODUCTION READY**
 
-- **Build Status:** ✅ SUCCESS
-- **Features:** ✅ FULLY IMPLEMENTED (8 endpoints)
-- **Documentation:** ✅ COMPLETE (API + Guides)
-- **Deployment Ready:** ✅ YES (Docker + Gunicorn)
+- **Build Status:** âœ… SUCCESS
+- **Features:** âœ… FULLY IMPLEMENTED (8 endpoints)
+- **Documentation:** âœ… COMPLETE (API + Guides)
+- **Deployment Ready:** âœ… YES (Docker + Gunicorn)
 
 ---
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
-### Prerequisites
-- Python 3.10+
-- PostgreSQL 12+
-- Redis
-- Git
+### ðŸ§° Prerequisites
+- ðŸ Python 3.10+
+- ðŸ—„ï¸ PostgreSQL 12+
+- ðŸ”´ Redis
+- ðŸ§¬ Git
 
-### Installation
+### âš™ï¸ Installation
 
 ```bash
 # Clone the repository
@@ -88,58 +88,58 @@ Documentation: `http://localhost:8000/documentation`
 
 ---
 
-## 📚 Documentation
+## ðŸ“š Documentation
 
-### 📖 **Complete API Documentation**
+### ðŸ“– **Complete API Documentation**
 Comprehensive endpoint documentation with request/response examples, validation rules, and error scenarios.
 
-**👉 [View API Documentation](./API_DOCUMENTATION.md)**
+**ðŸ‘‰ [View API Documentation](./API_DOCUMENTATION.md)**
 
-### 📋 **This README**
+### ðŸ“‹ **This README**
 Project overview and quick reference guide.
 
 ---
 
-## ✨ Features
+## âœ¨ Features
 
 <table>
 <tr>
 <td width="50%">
 
-### 👥 User Management
-- ✅ User registration with token delivery
-- ✅ Token-based authentication
-- ✅ Token refresh via revoke keys
-- ✅ Account password protection
+### ðŸ‘¥ User Management
+- âœ… User registration with token delivery
+- âœ… Token-based authentication
+- âœ… Token refresh via revoke keys
+- âœ… Account password protection
 
 </td>
 <td width="50%">
 
-### 📧 Email Delivery
-- ✅ Send with user SMTP credentials
-- ✅ Send with system SMTP fallback
-- ✅ Single or multi-recipient support
-- ✅ Quota-based rate limiting
+### ðŸ“§ Email Delivery
+- âœ… Send with user SMTP credentials
+- âœ… Send with system SMTP fallback
+- âœ… Single or multi-recipient support
+- âœ… Quota-based rate limiting
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### 🎨 Template System
-- ✅ 5 email templates (0-4)
-- ✅ Custom HTML support
-- ✅ Dynamic variables
-- ✅ Fallback text support
+### ðŸŽ¨ Template System
+- âœ… 5 email templates (0-4)
+- âœ… Custom HTML support
+- âœ… Dynamic variables
+- âœ… Fallback text support
 
 </td>
 <td width="50%">
 
-### 🔐 Security
-- ✅ Token-gated routes
-- ✅ Password hardening
-- ✅ Quota protection
-- ✅ Email validation
+### ðŸ” Security
+- âœ… Token-gated routes
+- âœ… Password hardening
+- âœ… Quota protection
+- âœ… Email validation
 
 </td>
 </tr>
@@ -147,35 +147,35 @@ Project overview and quick reference guide.
 
 ---
 
-## 🏗️ System Design
+## ðŸ—ï¸ System Design
 
-### 📐 High-Level Architecture
+### ðŸ“ High-Level Architecture
 
 ```mermaid
 graph TB
-    Client["👥 Client Layer<br/>(Web/Mobile/CLI Apps)"]
+    Client["ðŸ‘¥ Client Layer<br/>(Web/Mobile/CLI Apps)"]
     
-    subgraph API["🚀 API Gateway Layer<br/>(FastAPI + CORS Middleware)"]
+    subgraph API["ðŸš€ API Gateway Layer<br/>(FastAPI + CORS Middleware)"]
         UserRouter["User Router"]
         EmailRouter["Email Router"]
         StatusRouter["Status Routes"]
     end
     
-    subgraph Core["⚙️ Core Services Layer"]
-        Services["Services<br/>• UserServices<br/>• EmailService"]
+    subgraph Core["âš™ï¸ Core Services Layer"]
+        Services["Services<br/>â€¢ UserServices<br/>â€¢ EmailService"]
         Queue["Task Queue<br/>(Celery)"]
         DB["Database Service<br/>PostgreSQL<br/>Async ORM<br/>SQLAlchemy"]
     end
     
-    Redis["🔴 Redis<br/>(Broker & Backend)"]
+    Redis["ðŸ”´ Redis<br/>(Broker & Backend)"]
     
-    subgraph Ext["🌐 External Services"]
+    subgraph Ext["ðŸŒ External Services"]
         SMTP["SMTP Service<br/>(Multi-Provider)"]
         Templates["Template Engine"]
         Logging["Logging System"]
     end
     
-    EmailProviders["📧 Email Providers<br/>(Gmail, Outlook, Yahoo, Zoho)"]
+    EmailProviders["ðŸ“§ Email Providers<br/>(Gmail, Outlook, Yahoo, Zoho)"]
     
     Client -->|HTTP/REST| API
     API --> Services
@@ -196,9 +196,9 @@ graph TB
     style EmailProviders fill:#ffebee
 ```
 
-### 🔄 Data Flow Diagram
+### ðŸ”„ Data Flow Diagram
 
-#### User Registration Flow
+#### ðŸ‘¤ User Registration Flow
 
 ```mermaid
 sequenceDiagram
@@ -212,7 +212,7 @@ sequenceDiagram
     API->>Services: Validate Input
     Services->>Services: Generate Tokens<br/>(API Token, Revoke)
     Services->>DB: Create User<br/>(Store in DB)
-    DB-->>Services: User Created ✓
+    DB-->>Services: User Created âœ“
     Services-->>API: User Object + Tokens
     API-->>Client: HTTP 201 Created<br/>(token, revokeToken)
     
@@ -220,7 +220,7 @@ sequenceDiagram
     Queue-->>Client: (Processing Async)
 ```
 
-#### Email Sending Flow (Async Processing)
+#### ðŸ“¨ Email Sending Flow (Async Processing)
 
 ```mermaid
 sequenceDiagram
@@ -241,11 +241,11 @@ sequenceDiagram
     Worker->>SMTP: Connect to SMTP Server
     Worker->>Worker: Render Template
     Worker->>SMTP: Send Email
-    SMTP-->>Worker: Success ✓
+    SMTP-->>Worker: Success âœ“
     Worker-->>Queue: Result (Status)
 ```
 
-#### Token Refresh Flow
+#### ðŸ”‘ Token Refresh Flow
 
 ```mermaid
 sequenceDiagram
@@ -258,10 +258,10 @@ sequenceDiagram
     Client->>API: POST /users/newToken/{id}
     API->>Services: Verify User ID
     Services->>DB: Query User by ID
-    DB-->>Services: User Info ✓
+    DB-->>Services: User Info âœ“
     Services->>Services: Generate New Token
     Services->>DB: Update DB<br/>(Store New Token)
-    DB-->>Services: Updated ✓
+    DB-->>Services: Updated âœ“
     Services-->>API: New Token
     API-->>Client: HTTP 200 OK<br/>(newToken)
     
@@ -269,33 +269,33 @@ sequenceDiagram
     Queue-->>DB: Schedule Revoke
 ```
 
-### 🔀 Component Interaction Diagram
+### ðŸ”€ Component Interaction Diagram
 
 ```mermaid
 graph TB
-    subgraph Router["🎮 FastAPI Router<br/>(Request Processing)"]
-        UserR["User Router<br/>• register<br/>• getUser<br/>• newToken<br/>• revokeKey<br/>• secureAccount"]
-        EmailR["Email Router<br/>• send<br/>• sendDefault"]
+    subgraph Router["ðŸŽ® FastAPI Router<br/>(Request Processing)"]
+        UserR["User Router<br/>â€¢ register<br/>â€¢ getUser<br/>â€¢ newToken<br/>â€¢ revokeKey<br/>â€¢ secureAccount"]
+        EmailR["Email Router<br/>â€¢ send<br/>â€¢ sendDefault"]
     end
     
-    subgraph Services["⚙️ Services Layer"]
-        UserServ["UserServices<br/>• register()<br/>• getUser()<br/>• newToken()<br/>• revokeKey()<br/>• secureAccount()"]
-        EmailServ["EmailService<br/>• validate_email()<br/>• send()<br/>• sendDefault()<br/>• renderTemplate()<br/>• getUserSMTP()"]
+    subgraph Services["âš™ï¸ Services Layer"]
+        UserServ["UserServices<br/>â€¢ register()<br/>â€¢ getUser()<br/>â€¢ newToken()<br/>â€¢ revokeKey()<br/>â€¢ secureAccount()"]
+        EmailServ["EmailService<br/>â€¢ validate_email()<br/>â€¢ send()<br/>â€¢ sendDefault()<br/>â€¢ renderTemplate()<br/>â€¢ getUserSMTP()"]
     end
     
-    subgraph Data["💾 Data Access Layer"]
+    subgraph Data["ðŸ’¾ Data Access Layer"]
         ORM["SQLAlchemy ORM<br/>(Async Session)"]
         Model["User Model"]
     end
     
-    subgraph DB["🗄️ Database"]
+    subgraph DB["ðŸ—„ï¸ Database"]
         DBConn["PostgreSQL<br/>Primary Connection"]
-        Table["Users Table<br/>• id<br/>• email<br/>• apiToken<br/>• quotas<br/>• createdAt"]
+        Table["Users Table<br/>â€¢ id<br/>â€¢ email<br/>â€¢ apiToken<br/>â€¢ quotas<br/>â€¢ createdAt"]
     end
     
-    Queue["📦 Celery Queue<br/>(Redis)<br/>• revoke_token()<br/>• send_email()<br/>• notify_user()"]
+    Queue["ðŸ“¦ Celery Queue<br/>(Redis)<br/>â€¢ revoke_token()<br/>â€¢ send_email()<br/>â€¢ notify_user()"]
     
-    SMTP["📧 SMTP Service<br/>(Multi-Provider)<br/>Gmail, Outlook,<br/>Yahoo, Zoho"]
+    SMTP["ðŸ“§ SMTP Service<br/>(Multi-Provider)<br/>Gmail, Outlook,<br/>Yahoo, Zoho"]
     
     UserR -->|routes to| UserServ
     EmailR -->|routes to| EmailServ
@@ -316,7 +316,7 @@ graph TB
     style SMTP fill:#f1f8e9
 ```
 
-### 📊 Database Schema Diagram
+### ðŸ“Š Database Schema Diagram
 
 ```mermaid
 erDiagram
@@ -358,21 +358,21 @@ erDiagram
     }
 ```
 
-### 🔐 Authentication & Authorization Flow
+### ðŸ” Authentication & Authorization Flow
 
 ```mermaid
 flowchart TD
-    Start["🔐 API REQUEST<br/>WITH TOKEN HEADER"] --> Extract["Extract Bearer Token<br/>from Headers"]
+    Start["ðŸ” API REQUEST<br/>WITH TOKEN HEADER"] --> Extract["Extract Bearer Token<br/>from Headers"]
     Extract --> Query["Query User by Token<br/>in Database"]
     Query --> Check{Token<br/>Valid?}
     
     Check -->|YES| Load["Load User Context<br/>into Request"]
-    Check -->|NO| Reject["❌ Return 401<br/>Unauthorized"]
+    Check -->|NO| Reject["âŒ Return 401<br/>Unauthorized"]
     
     Load --> CheckQuota{Check Quotas<br/>& Permissions}
     
-    CheckQuota -->|OK| Proceed["✅ Proceed with<br/>Request"]
-    CheckQuota -->|DENIED| QuotaError["⛔ Return 429<br/>Quota Limit Exceeded"]
+    CheckQuota -->|OK| Proceed["âœ… Proceed with<br/>Request"]
+    CheckQuota -->|DENIED| QuotaError["â›” Return 429<br/>Quota Limit Exceeded"]
     
     Proceed --> Success["Execute Handler"]
     Reject --> End1["End - Rejected"]
@@ -386,35 +386,35 @@ flowchart TD
     style Success fill:#c8e6c9
 ```
 
-### 📈 Scaling Architecture
+### ðŸ“ˆ Scaling Architecture
 
 ```mermaid
 graph TB
-    subgraph LB["🔄 Load Balancing Layer"]
+    subgraph LB["ðŸ”„ Load Balancing Layer"]
         Proxy["Reverse Proxy<br/>(Nginx/HAProxy)"]
     end
     
-    subgraph API["🚀 API Servers<br/>(Horizontally Scalable)"]
+    subgraph API["ðŸš€ API Servers<br/>(Horizontally Scalable)"]
         Instance1["FastAPI Instance 1<br/>(Gunicorn)"]
         Instance2["FastAPI Instance 2<br/>(Gunicorn)"]
         InstanceN["FastAPI Instance N<br/>(Gunicorn)"]
     end
     
-    subgraph Data["💾 Data Layer"]
+    subgraph Data["ðŸ’¾ Data Layer"]
         PG["PostgreSQL Primary"]
         PGRead1["Read Replica 1"]
         PGRead2["Read Replica N"]
     end
     
-    subgraph Cache["⚡ Cache & Queue Layer"]
-        Redis["Redis Cluster<br/>• Task Queue<br/>• Result Backend<br/>• Caching<br/>• Sessions"]
+    subgraph Cache["âš¡ Cache & Queue Layer"]
+        Redis["Redis Cluster<br/>â€¢ Task Queue<br/>â€¢ Result Backend<br/>â€¢ Caching<br/>â€¢ Sessions"]
     end
     
-    subgraph Workers["🔧 Worker Layer"]
+    subgraph Workers["ðŸ”§ Worker Layer"]
         Celery["Celery Workers<br/>(Async Processing)"]
     end
     
-    Client["👥 Clients"]
+    Client["ðŸ‘¥ Clients"]
     
     Client -->|HTTP/HTTPS| Proxy
     Proxy --> Instance1
@@ -445,154 +445,154 @@ graph TB
 
 ---
 
-## 🏗️ Architecture
+## ðŸ—ï¸ Architecture
 
 ### Clean Layered Architecture
 
 ```
-┌─────────────────────────────────────┐
-│     FastAPI Routers                 │
-├─────────────────────────────────────┤
-│     Business Logic Layer            │
-│     (Services)                      │
-├─────────────────────────────────────┤
-│     Data Access Layer               │
-│     (Repositories + ORM)            │
-├─────────────────────────────────────┤
-│     Infrastructure                  │
-│     (Database, Email, Cache)        │
-└─────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚     FastAPI Routers                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚     Business Logic Layer            â”‚
+â”‚     (Services)                      â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚     Data Access Layer               â”‚
+â”‚     (Repositories + ORM)            â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚     Infrastructure                  â”‚
+â”‚     (Database, Email, Cache)        â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ### Key Design Principles
 
 - **Async-First:** Non-blocking I/O with asyncio
-- **Separation of Concerns:** Clear router → service → repository pattern
+- **Separation of Concerns:** Clear router â†’ service â†’ repository pattern
 - **Dependency Injection:** FastAPI's Depends() for loose coupling
 - **Error Handling:** Comprehensive exception handling with proper HTTP codes
 
 ---
 
-## 📊 Project Structure
+## ðŸ“Š Project Structure
 
 ```
 MailApixAPI/
-│
-├── 🎮 Routers/
-│   ├── user.py              │ User registration & token management
-│   └── email.py             │ Email sending endpoints
-│
-├── ⚙️ Services/
-│   ├── UserServices.py      │ User business logic
-│   └── EmailService.py      │ Email delivery logic
-│
-├── 💾 Controller/
-│   ├── database.py          │ Database connection & session
-│   ├── models.py            │ SQLAlchemy ORM models
-│   ├── schema.py            │ Pydantic request/response schemas
-│   └── parser.py            │ Request parsers
-│
-├── 🎨 Templates/
-│   ├── simple.py            │ Plain text template
-│   ├── cool.py              │ HTML template 1
-│   ├── amazing.py           │ HTML template 2
-│   ├── impressive.py        │ HTML template 3
-│   └── System/
-│       ├── registration.py  │ Registration email
-│       ├── packageplan.py   │ Upgrade email
-│       └── tokenrevert.py   │ Token reset email
-│
-├── 📦 Tasks/
-│   └── revoke_token_tasks.py │ Celery background tasks
-│
-├── __init__.py          │ Package initialization
-├── main.py              │ FastAPI app initialization
-├── celery_app.py        │ Celery task queue setup  
-├── utils.py             │ Helper functions
-├── logger.py            │ Logging configuration        
-│
-└── .env                 │ Environment variables
+â”‚
+â”œâ”€â”€ ðŸŽ® Routers/
+â”‚   â”œâ”€â”€ user.py              â”‚ User registration & token management
+â”‚   â””â”€â”€ email.py             â”‚ Email sending endpoints
+â”‚
+â”œâ”€â”€ âš™ï¸ Services/
+â”‚   â”œâ”€â”€ UserServices.py      â”‚ User business logic
+â”‚   â””â”€â”€ EmailService.py      â”‚ Email delivery logic
+â”‚
+â”œâ”€â”€ ðŸ’¾ Controller/
+â”‚   â”œâ”€â”€ database.py          â”‚ Database connection & session
+â”‚   â”œâ”€â”€ models.py            â”‚ SQLAlchemy ORM models
+â”‚   â”œâ”€â”€ schema.py            â”‚ Pydantic request/response schemas
+â”‚   â””â”€â”€ parser.py            â”‚ Request parsers
+â”‚
+â”œâ”€â”€ ðŸŽ¨ Templates/
+â”‚   â”œâ”€â”€ simple.py            â”‚ Plain text template
+â”‚   â”œâ”€â”€ cool.py              â”‚ HTML template 1
+â”‚   â”œâ”€â”€ amazing.py           â”‚ HTML template 2
+â”‚   â”œâ”€â”€ impressive.py        â”‚ HTML template 3
+â”‚   â””â”€â”€ System/
+â”‚       â”œâ”€â”€ registration.py  â”‚ Registration email
+â”‚       â”œâ”€â”€ packageplan.py   â”‚ Upgrade email
+â”‚       â””â”€â”€ tokenrevert.py   â”‚ Token reset email
+â”‚
+â”œâ”€â”€ ðŸ“¦ Tasks/
+â”‚   â””â”€â”€ revoke_token_tasks.py â”‚ Celery background tasks
+â”‚
+â”œâ”€â”€ __init__.py          â”‚ Package initialization
+â”œâ”€â”€ main.py              â”‚ FastAPI app initialization
+â”œâ”€â”€ celery_app.py        â”‚ Celery task queue setup  
+â”œâ”€â”€ utils.py             â”‚ Helper functions
+â”œâ”€â”€ logger.py            â”‚ Logging configuration        
+â”‚
+â””â”€â”€ .env                 â”‚ Environment variables
 ```
 
 ---
 
-## 🔌 API Endpoints
+### ðŸ”Œ API Endpoints
 
-### 📥 **User Management** (GET)
-
-| Endpoint | Purpose |
-|----------|---------|
-| `GET /users/info` | Get user details |
-| `GET /users/upgrade` | Request upgrade plan |
-
-### ✍️ **User Creation/Auth** (POST)
+### ðŸ“¥ **User Management** (GET)
 
 | Endpoint | Purpose |
 |----------|---------|
-| `POST /users/` | Register new user |
-| `POST /users/revokeKey/{id}` | Generate revoke key |
-| `POST /users/newToken/{id}` | Generate new token |
+| `ðŸ“ GET /users/info` | Get user details |
+| `ðŸ“ GET /users/upgrade` | Request upgrade plan |
 
-### 🔄 **User Updates** (PUT)
-
-| Endpoint | Purpose |
-|----------|---------|
-| `PUT /users/secureAccount/{id}` | Set account password |
-
-### 📧 **Email Sending** (POST)
+### âœï¸ **User Creation/Auth** (POST)
 
 | Endpoint | Purpose |
 |----------|---------|
-| `POST /email/` | Send with user SMTP |
-| `POST /email/default` | Send with system SMTP |
+| `ðŸ“ POST /users/` | Register new user |
+| `ðŸ“ POST /users/revokeKey/{id}` | Generate revoke key |
+| `ðŸ“ POST /users/newToken/{id}` | Generate new token |
 
-### Query Parameters
+### ðŸ”„ **User Updates** (PUT)
+
+| Endpoint | Purpose |
+|----------|---------|
+| `ðŸ“ PUT /users/secureAccount/{id}` | Set account password |
+
+### ðŸ“§ **Email Sending** (POST)
+
+| Endpoint | Purpose |
+|----------|---------|
+| `ðŸ“ POST /email/` | Send with user SMTP |
+| `ðŸ“ POST /email/default` | Send with system SMTP |
+
+### ðŸ“‹ Query Parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `template_id` | int | Template ID (0-4) |
-| `company_name` | string | Company name |
-| `company_link` | string | Company website |
-| `email_title` | string | Email subject |
+| ðŸ·ï¸ `template_id` | int | Template ID (0-4) |
+| ðŸ¢ `company_name` | string | Company name |
+| ðŸ”— `company_link` | string | Company website |
+| ðŸ“„ `email_title` | string | Email subject |
 
 ---
 
-## 💾 Technology Stack
+## ðŸ’¾ Technology Stack
 
-- **Framework:** FastAPI (Python)
-- **Database:** PostgreSQL with asyncpg
-- **ORM:** SQLAlchemy (async)
-- **Validation:** Pydantic v2
-- **Email:** SMTP (smtplib)
-- **Background Tasks:** Celery + Redis
-- **Deployment:** Gunicorn + Uvicorn
-- **API Docs:** Swagger/OpenAPI
+- ðŸ **Framework:** FastAPI (Python)
+- ðŸ—„ï¸ **Database:** PostgreSQL with asyncpg
+- ðŸ”— **ORM:** SQLAlchemy (async)
+- âœ… **Validation:** Pydantic v2
+- ðŸ“§ **Email:** SMTP (smtplib)
+- ðŸ“¬ **Background Tasks:** Celery + Redis
+- ðŸš€ **Deployment:** Gunicorn + Uvicorn
+- ðŸ“š **API Docs:** Swagger/OpenAPI
 
 ---
 
-## 🎨 Templates
+## ðŸŽ¨ Templates
 
 | ID | Type | Use Case |
 |----|------|----------|
-| **0** | Plain Text | Simple transactional emails |
-| **1** | Professional | Business communications |
-| **2** | Modern | Product notifications |
-| **3** | Elegant | Marketing campaigns |
-| **4** | Custom | Full HTML control |
+| **0ï¸âƒ£** | Plain Text | Simple transactional emails |
+| **1ï¸âƒ£** | Professional | Business communications |
+| **2ï¸âƒ£** | Modern | Product notifications |
+| **3ï¸âƒ£** | Elegant | Marketing campaigns |
+| **4ï¸âƒ£** | Custom | Full HTML control |
 
-### Template Variables
+### ðŸ·ï¸ Template Variables
 
 All templates support:
-- `title` - Email heading
-- `content` - Email body
-- `company_name` - Company name
-- `company_link` - Company website
+- `title` - ðŸ“ Email heading
+- `content` - ðŸ“„ Email body
+- `company_name` - ðŸ¢ Company name
+- `company_link` - ðŸ”— Company website
 
 ---
 
-## 🚢 Deployment
+## ðŸš¢ Deployment
 
-### Production Setup
+### ðŸ³ Production Setup
 
 ```bash
 # Build container
@@ -604,86 +604,86 @@ gunicorn -k uvicorn.workers.UvicornWorker MailApixAPI.main:app \
   --bind 0.0.0.0:8000
 ```
 
-### Environment Variables
+### ðŸ” Environment Variables
 
 ```env
-# Database
+# ðŸ—„ï¸ Database
 DATABASE_USERNAME=postgres_user
 DATABASE_PASSWORD=postgres_password
 DATABASE_HOSTNAME=localhost
 DATABASE_NAME=mailapix_db
 
-# Email
+# ðŸ“§ Email
 SYSTEM_EMAIL=you@example.com
 SYSTEM_EMAIL_PASSKEY=app_password
 
-# Celery
+# ðŸ“¬ Celery
 CELERY_BROKER_URL=redis://localhost:6379/0
 CELERY_RESULT_BACKEND=redis://localhost:6379/1
 ```
 
-### Deployment Checklist
+### âœ… Deployment Checklist
 
-- ✅ Use managed PostgreSQL (RDS, Cloud SQL)
-- ✅ Store secrets in environment variables
-- ✅ Enable HTTPS at reverse proxy
-- ✅ Configure rate limiting
-- ✅ Set up database backups
-- ✅ Monitor logs and errors
-- ✅ Use strong email passwords
+- âœ… Use managed PostgreSQL (RDS, Cloud SQL)
+- âœ… Store secrets in environment variables
+- âœ… Enable HTTPS at reverse proxy
+- âœ… Configure rate limiting
+- âœ… Set up database backups
+- âœ… Monitor logs and errors
+- âœ… Use strong email passwords
 
 ---
 
-## 🛡️ Security
+## ðŸ›¡ï¸ Security
 
-### Best Practices
+### ðŸ”’ Best Practices
 
-- 🔐 Never commit `.env` files or secrets
-- 🔄 Rotate `SYSTEM_EMAIL_PASSKEY` every 90 days
-- 🛡️ Use HTTPS in production
-- ⛔ Configure CORS explicitly (not `*`)
-- 🚦 Implement rate limiting
-- 📊 Monitor quota usage
-- 🔑 Treat API tokens like passwords
-- 📧 Validate email addresses
+- ðŸ” Never commit `.env` files or secrets
+- ðŸ”„ Rotate `SYSTEM_EMAIL_PASSKEY` every 90 days
+- ðŸ›¡ï¸ Use HTTPS in production
+- â›” Configure CORS explicitly (not `*`)
+- ðŸš¦ Implement rate limiting
+- ðŸ“Š Monitor quota usage
+- ðŸ”‘ Treat API tokens like passwords
+- ðŸ“§ Validate email addresses
 
-### Security Policy
+### ðŸ“‹ Security Policy
 
 Have you found a security vulnerability? Please follow responsible disclosure:
 
-👉 [Security Policy](./SECURITY.md)
+ðŸ‘‰ [Security Policy](./SECURITY.md)
 
 ---
 
-## 📝 License
+## ðŸ“ License
 
 This project is licensed under the MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
 
-## 👨‍💻 Author
+## ðŸ‘¨â€ðŸ’» Author
 
 **Sumit Dubey**
 
-- 🔗 GitHub: [https://github.com/Sumit0ubey](https://github.com/Sumit0ubey)
-- 📧 Email: sumitdubey810@outlook.com
+- ðŸ”— GitHub: [https://github.com/Sumit0ubey](https://github.com/Sumit0ubey)
+- ðŸ“§ Email: sumitdubey810@outlook.com
 
 ---
 
-## ⭐ Show Your Support
+## â­ Show Your Support
 
 If you found this project helpful, useful, or interesting, please consider **giving it a star** on GitHub! Your support helps:
 
-- 🚀 Reach more developers who need this solution
-- 💪 Motivate continued development and improvements
-- 🌟 Build a stronger community around the project
+- ðŸš€ Reach more developers who need this solution
+- ðŸ’ª Motivate continued development and improvements
+- ðŸŒŸ Build a stronger community around the project
 
 ---
 
-## 📚 Additional Resources
+## ðŸ“š Additional Resources
 
-- [Contributing Guidelines](./CONTRIBUTING.md)
-- [Code of Conduct](./CODE_OF_CONDUCT.md)
-- [API Documentation](./API_DOCUMENTATION.md)
+- ðŸ¤ [Contributing Guidelines](./CONTRIBUTING.md)
+- ðŸ“œ [Code of Conduct](./CODE_OF_CONDUCT.md)
+- ðŸ“– [API Documentation](./API_DOCUMENTATION.md)
 
 
